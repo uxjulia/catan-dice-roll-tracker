@@ -1,7 +1,10 @@
 {
   "name": "dice-roll-tracker",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=17.2.0"
+  },
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
@@ -58,5 +61,6 @@
   "devDependencies": {
     "eslint": "^8.16.0",
     "eslint-plugin-react": "^7.30.0"
-  }
+  },
+  "packageManager": "yarn@3.2.1"
 }
