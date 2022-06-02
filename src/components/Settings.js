@@ -146,6 +146,7 @@ const Settings = ({ onChange, handleSelect }) => {
         )}
         <div className="d-flex justify-content-end">
           <Button
+            fullWidth
             variant="outlined"
             onClick={resetPlayers}
             type="reset"
