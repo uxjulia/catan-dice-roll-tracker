@@ -16,7 +16,7 @@ const Header = ({ title }) => {
   return (
     <Wrapper>
       <div className="hideForMobile">
-        <header className="site-header d-flex align-items-center">
+        <header className="site-header d-flex align-items-center ps-2">
           <Typography component="span" color="primary">
             <FontAwesomeIcon icon={faDice} size="2x" className="me-2" />
           </Typography>
