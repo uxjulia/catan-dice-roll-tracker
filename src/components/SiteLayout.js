@@ -12,8 +12,8 @@ const SiteLayout = ({ left, right, fullScreen = false }) => {
           {fullScreen && <div className="col-md-12">{left}</div>}
           {!fullScreen && (
             <>
-              <div className="col-md-8">{left}</div>
-              <div className="col-md-4">{right}</div>
+              <div className="col-md-9">{left}</div>
+              <div className="col-md-3">{right}</div>
             </>
           )}
         </div>

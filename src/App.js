@@ -214,6 +214,15 @@ class App extends Component {
     window.removeEventListener("keypress", this.handlePress);
   }
 
+  componentWillUnmount() {
+    const handlePress = this.handlePress;
+    window.removeEventListener("keypress", function (e) {
+      if (logKey(e) !== false) {
+        handlePress(logKey(e));
+      }
+    });
+  }
+
   render() {
     const log = this.state.log;
     const lastRoll = _.head(log);

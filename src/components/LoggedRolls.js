@@ -3,6 +3,14 @@ import Card from "@mui/material/Card";
 import { CardContent } from "@mui/material";
 import _ from "lodash";
 import PropTypes from "prop-types";
+import styled from "@emotion/styled";
+
+const Wrapper = styled.div`
+  .rolllog :first-of-type {
+    color: #d54343;
+    font-weight: bold;
+  }
+`;
 
 class LoggedRolls extends Component {
   render() {
@@ -22,7 +30,7 @@ class LoggedRolls extends Component {
               Total Rolls: {data.length}{" "}
             </span>
           </div>
-          <div>
+          <Wrapper>
             <span>Last Roll: </span>
             {!data.length && <span className="text-muted">No rolls yet</span>}
             {data.length <= 1 && <span>{_.join(data, ", ")}</span>}
@@ -32,7 +40,7 @@ class LoggedRolls extends Component {
                 <span>{_.join(tail, ", ")}</span>
               </span>
             )}
-          </div>
+          </Wrapper>
         </CardContent>
       </Card>
     );

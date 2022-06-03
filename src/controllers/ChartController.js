@@ -53,7 +53,7 @@ class ChartController extends Component {
   }
 
   render() {
-    return <canvas id="chart"></canvas>;
+    return <canvas id="chart" style={{ maxHeight: "60vh" }}></canvas>;
   }
 }
 
