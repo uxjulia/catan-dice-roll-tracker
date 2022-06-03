@@ -155,13 +155,16 @@ class App extends Component {
     this.setState({ rolls: rolls, log: log });
     this.setActivePlayer(null, "next");
   };
-  handlePress = (n) => {
-    const index = Number(n) - 2;
-    const rolls = this.state.rolls;
-    rolls[index]++;
-    let log = update(this.state.log, { $unshift: [n] });
-    this.setState({ rolls: rolls, log: log });
-    this.setActivePlayer(null, "next");
+  handlePress = (e) => {
+    let n = logKey(e);
+    if (n) {
+      const index = Number(n) - 2;
+      const rolls = this.state.rolls;
+      rolls[index]++;
+      let log = update(this.state.log, { $unshift: [n] });
+      this.setState({ rolls: rolls, log: log });
+      this.setActivePlayer(null, "next");
+    }
   };
   handleUndo = () => {
     const log = this.state.log;
@@ -186,7 +189,6 @@ class App extends Component {
     const total = this.state.players.length;
     const players = this.state.players;
     const newPlayerArr = resetPlayers(total, total, players);
-    // const newPlayerArr = defaultState.players;
     const newPlayers = update(players, { $set: newPlayerArr });
     this.setState({ players: newPlayers, clearNames: this.clearNames++ });
   };
@@ -205,12 +207,11 @@ class App extends Component {
   };
 
   componentDidMount() {
-    const handlePress = this.handlePress;
-    window.addEventListener("keypress", function (e) {
-      if (logKey(e) !== false) {
-        handlePress(logKey(e));
-      }
-    });
+    window.addEventListener("keypress", this.handlePress);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("keypress", this.handlePress);
   }
 
   render() {
