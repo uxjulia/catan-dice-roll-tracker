@@ -20,25 +20,39 @@ const PlayerSelect = ({ playerCount, onChange }) => {
           onChange={onChange}
         >
           <MenuItem value={0}>
-            <Typography variant="body2">--- Select ---</Typography>
+            <Typography variant="body2" component="span">
+              --- Select ---
+            </Typography>
           </MenuItem>
           <MenuItem value={1}>
-            <Typography variant="body2">1</Typography>
+            <Typography variant="body2" component="span">
+              1
+            </Typography>
           </MenuItem>
           <MenuItem value={2}>
-            <Typography variant="body2">2</Typography>
+            <Typography variant="body2" component="span">
+              2
+            </Typography>
           </MenuItem>
           <MenuItem value={3}>
-            <Typography variant="body2">3</Typography>
+            <Typography variant="body2" component="span">
+              3
+            </Typography>
           </MenuItem>
           <MenuItem value={4}>
-            <Typography variant="body2">4</Typography>
+            <Typography variant="body2" component="span">
+              4
+            </Typography>
           </MenuItem>
           <MenuItem value={5}>
-            <Typography variant="body2">5</Typography>
+            <Typography variant="body2" component="span">
+              5
+            </Typography>
           </MenuItem>
           <MenuItem value={6}>
-            <Typography variant="body2">6</Typography>
+            <Typography variant="body2" component="span">
+              6
+            </Typography>
           </MenuItem>
         </Select>
       </FormControl>

@@ -19,7 +19,12 @@ const PlayerInputAutoSelect = (props) => {
   };
   return (
     <Box className="mt-3 mb-4">
-      <TextField inputRef={inputEl} onFocus={handleFocus} {...props} />
+      <TextField
+        inputRef={inputEl}
+        onFocus={handleFocus}
+        {...props}
+        InputProps={{ sx: { fontSize: ".9rem" } }}
+      />
     </Box>
   );
 };
