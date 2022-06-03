@@ -4482,6 +4482,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chance.js@npm:^0.0.1":
+  version: 0.0.1
+  resolution: "chance.js@npm:0.0.1"
+  checksum: 1fb8a0cf75f221de01608d7e5ac8053ad9ad075db325a28debd059cf1be6761fdf6186b52d14ef5ce83a6d5484764599c271fbd25a2032e75cec26606b327252
+  languageName: node
+  linkType: hard
+
 "char-regex@npm:^1.0.2":
   version: 1.0.2
   resolution: "char-regex@npm:1.0.2"
@@ -5414,6 +5421,7 @@ __metadata:
     "@testing-library/react": ^13.3.0
     "@testing-library/user-event": ^13.5.0
     bootstrap: ^5.1.3
+    chance.js: ^0.0.1
     chart.js: ^2.4.0
     eslint: ^8.16.0
     eslint-plugin-react: ^7.30.0
