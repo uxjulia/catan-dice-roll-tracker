@@ -18,6 +18,9 @@ import {
   faUpRightAndDownLeftFromCenter,
   faDownLeftAndUpRightToCenter,
 } from "@fortawesome/pro-regular-svg-icons";
+import rollADie from "roll-a-die";
+import DiceRoller from "./components/DiceRoller";
+
 const ExpansionIconWrapper = styled.div`
 @media only screen and (max-width: 576px) {
   div.hideForMobile {
@@ -26,6 +29,10 @@ const ExpansionIconWrapper = styled.div`
 })`;
 
 function testLog(n) {
+  console.log("in testLog", n);
+  if (n === "roll") {
+    return true;
+  }
   if (n === "undo") {
     return "undo";
   } else {
@@ -48,6 +55,9 @@ function keyCode(x) {
       break;
     case "=":
       n = "12";
+      break;
+    case "32":
+      n = "roll";
       break;
     default:
       n = x;
@@ -156,6 +166,9 @@ class App extends Component {
     this.setActivePlayer(null, "next");
   };
   handlePress = (n) => {
+    if (n === "roll") {
+      this.rollDie();
+    }
     const index = Number(n) - 2;
     const rolls = this.state.rolls;
     rolls[index]++;
@@ -182,6 +195,16 @@ class App extends Component {
       activePlayer: 0,
     });
   };
+
+  rollDie = () => {
+    return rollADie({
+      delay: 10000,
+      numberOfDice: 2,
+      element: document.getElementById("dice-roll-container"),
+      callback: this.handlePress,
+    });
+  };
+
   clearPlayerNames = () => {
     const total = this.state.players.length;
     const players = this.state.players;
@@ -276,6 +299,10 @@ class App extends Component {
           }
           right={
             <div>
+              <DiceRoller
+                onClick={this.handlePress}
+                targetId="dice-roll-container"
+              />
               <DiceInput {...diceProps} />
               <Settings {...selectProps} />
             </div>
