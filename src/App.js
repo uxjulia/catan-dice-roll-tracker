@@ -9,6 +9,7 @@ import DiceInput from "./components/DiceInput";
 import Settings from "./components/Settings";
 import PlayerData from "./controllers/PlayerData";
 import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
 import LoggedRolls from "./components/LoggedRolls";
 import SiteLayout from "./components/SiteLayout";
 import styled from "@emotion/styled";
@@ -22,6 +23,8 @@ import DiceRoller from "./components/DiceRoller";
 import DiceRollDisplay from "./components/DiceRollDisplay";
 import Chance from "chance";
 let chance = new Chance();
+import HelpMenu from "./components/HelpMenu";
+
 const ExpansionIconWrapper = styled.div`
 @media only screen and (max-width: 576px) {
   div.hideForMobile {
@@ -124,6 +127,9 @@ const defaultState = {
   activePlayer: 0,
   fullScreen: false,
   diceRolls: [],
+  showDiceInput: true,
+  showNumPadInput: true,
+  displayHelpMenu: false,
 };
 
 class App extends Component {
@@ -242,6 +248,10 @@ class App extends Component {
     this.setState({ fullScreen: !this.state.fullScreen });
   };
 
+  handleMenuVisibility = (visible) => {
+    this.setState({ displayHelpMenu: visible });
+  };
+
   componentDidMount() {
     window.addEventListener("keypress", this.handlePress);
   }
@@ -270,11 +280,19 @@ class App extends Component {
       onClick: this.setActivePlayer,
     };
     const settingsProps = {
-      players: this.state.players,
+      toggles: {
+        diceInput: this.state.showDiceInput,
+        numPadInput: this.state.showNumPadInput,
+      },
       handleSelect: this.handleSelect,
       onChange: this.setPlayerNames,
-      handleReset: this.handleReset,
-      clearNames: this.clearNames,
+      handleDiceToggle: (option) => {
+        this.setState({ showDiceInput: option });
+      },
+      handleNumPadToggle: (option) => {
+        this.setState({ showNumPadInput: option });
+      },
+      handleMenuVisibility: this.handleMenuVisibility,
     };
     return (
       <CustomTheme>
@@ -282,6 +300,16 @@ class App extends Component {
           fullScreen={this.state.fullScreen}
           left={
             <div className="mt-2">
+              <div className="container">
+                <div className="row">
+                  <div className="col-12">
+                    <HelpMenu
+                      open={this.state.displayHelpMenu}
+                      handleVisibility={this.handleMenuVisibility}
+                    />
+                  </div>
+                </div>
+              </div>
               <PlayerData {...playerProps} />
               {!this.state.fullScreen && (
                 <ExpansionIconWrapper>
@@ -313,13 +341,27 @@ class App extends Component {
           }
           right={
             <div>
-              <DiceRollDisplay value={lastRoll} onClick={this.rollDie} />
-              <DiceRoller
-                key={this.chartID}
-                onClick={this.rollDie}
-                rolls={this.state.diceRolls}
-              />
-              <DiceInput {...diceProps} />
+              {this.state.showDiceInput && (
+                <>
+                  <DiceRollDisplay value={lastRoll} onClick={this.rollDie} />
+                  <DiceRoller
+                    key={this.chartID}
+                    onClick={this.rollDie}
+                    rolls={this.state.diceRolls}
+                  />
+                </>
+              )}
+              {this.state.showNumPadInput && <DiceInput {...diceProps} />}
+              <Button
+                className="mt-2 mb-3 px-2"
+                variant="contained"
+                fullWidth
+                onClick={this.handleReset}
+                key="reset"
+                id="reset"
+              >
+                Start New Game
+              </Button>
               <Settings {...settingsProps} />
             </div>
           }

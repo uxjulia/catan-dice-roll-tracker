@@ -13,7 +13,7 @@ const DiceRollDisplay = ({ value, onClick }) => {
           cursor: "pointer",
           padding: "5px",
           marginBottom: ".5rem",
-          backgroundColor: "#505963",
+          backgroundColor: "#b02c2c",
         }}
         variant="outlined"
       >

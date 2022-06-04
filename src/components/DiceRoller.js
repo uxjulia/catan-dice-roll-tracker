@@ -63,6 +63,7 @@ Dice.propTypes = {
 };
 
 const Wrapper = styled.div`
+  margin-bottom: 1rem;
   .dice-1 {
     color: #78909c;
   }
@@ -97,9 +98,9 @@ const DiceRoller = ({ onClick, rolls = [] }) => {
             variant="body2"
             className="text-muted"
           >
-            {isMobile && "Tap to roll virtual dice"}
-            {isDesktop && "Click to roll virtual dice"}
-            {hybrid && "Tap or click to roll virtual dice"}
+            {isMobile && "Tap here to roll virtual dice"}
+            {isDesktop && "Click here to roll virtual dice"}
+            {hybrid && "Tap or click here to roll virtual dice"}
           </Typography>
         )}
         <Box className="d-flex justify-content-evenly">
