@@ -18,9 +18,10 @@ import {
   faUpRightAndDownLeftFromCenter,
   faDownLeftAndUpRightToCenter,
 } from "@fortawesome/pro-regular-svg-icons";
-import rollADie from "roll-a-die";
 import DiceRoller from "./components/DiceRoller";
-
+import DiceRollDisplay from "./components/DiceRollDisplay";
+import Chance from "chance";
+let chance = new Chance();
 const ExpansionIconWrapper = styled.div`
 @media only screen and (max-width: 576px) {
   div.hideForMobile {
@@ -29,12 +30,8 @@ const ExpansionIconWrapper = styled.div`
 })`;
 
 function testLog(n) {
-  console.log("in testLog", n);
   if (n === "roll") {
     return true;
-  }
-  if (n === "undo") {
-    return "undo";
   } else {
     const x = Number(n);
     return x >= 2 && x <= 13 ? true : false;
@@ -56,7 +53,7 @@ function keyCode(x) {
     case "=":
       n = "12";
       break;
-    case "32":
+    case " ":
       n = "roll";
       break;
     default:
@@ -75,7 +72,8 @@ function logKey(event) {
     if (event.which) {
       return keyCode(String.fromCharCode(event.keyCode)); // IE
     } else if (event.which !== 0 && event.charCode !== 0) {
-      return keyCode(String.fromCharCode(event.which)); // All other browsers
+      // return keyCode(String.fromCharCode(event.which)); // All other browsers
+      return keyCode(event.key);
     } else {
       return null; // Special Key
     }
@@ -125,6 +123,7 @@ const defaultState = {
   log: [],
   activePlayer: 0,
   fullScreen: false,
+  diceRolls: [],
 };
 
 class App extends Component {
@@ -157,7 +156,6 @@ class App extends Component {
     }
   };
   handleClick = (e) => {
-    e.preventDefault();
     const index = Number(e.target.id) - 2;
     const rolls = this.state.rolls;
     rolls[index]++;
@@ -165,10 +163,19 @@ class App extends Component {
     this.setState({ rolls: rolls, log: log });
     this.setActivePlayer(null, "next");
   };
-  handlePress = (n) => {
-    if (n === "roll") {
-      this.rollDie();
+
+  handlePress = (e) => {
+    if (e.target.nodeName === "BODY") {
+      let n = logKey(e);
+      if (n === "roll") {
+        this.rollDie();
+      } else if (n !== false) {
+        this.setRoll(n);
+      }
     }
+  };
+
+  setRoll = (n) => {
     const index = Number(n) - 2;
     const rolls = this.state.rolls;
     rolls[index]++;
@@ -176,6 +183,7 @@ class App extends Component {
     this.setState({ rolls: rolls, log: log });
     this.setActivePlayer(null, "next");
   };
+
   handleUndo = () => {
     const log = this.state.log;
     const lastRoll = _.head(log) - 2;
@@ -187,21 +195,14 @@ class App extends Component {
     log.shift();
     this.setState({ rolls: rolls, log: log });
   };
+
   handleReset = () => {
     this.chartID++;
     this.setState({
       rolls: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       log: [],
       activePlayer: 0,
-    });
-  };
-
-  rollDie = () => {
-    return rollADie({
-      delay: 10000,
-      numberOfDice: 2,
-      element: document.getElementById("dice-roll-container"),
-      callback: this.handlePress,
+      diceRolls: [],
     });
   };
 
@@ -209,7 +210,6 @@ class App extends Component {
     const total = this.state.players.length;
     const players = this.state.players;
     const newPlayerArr = resetPlayers(total, total, players);
-    // const newPlayerArr = defaultState.players;
     const newPlayers = update(players, { $set: newPlayerArr });
     this.setState({ players: newPlayers, clearNames: this.clearNames++ });
   };
@@ -223,17 +223,31 @@ class App extends Component {
     this.setState({ players: newPlayers, activePlayer: 0 });
   };
 
+  handleRoll = (array) => {
+    let count = 0;
+    for (let i = array.length; i--; ) {
+      count += array[i];
+    }
+    this.setRoll(count);
+  };
+
+  rollDie = async () => {
+    let roll1 = chance.d6();
+    let roll2 = chance.d6();
+    this.setState({ diceRolls: [roll1, roll2] });
+    this.handleRoll([roll1, roll2]);
+  };
+
   setFullScreen = () => {
     this.setState({ fullScreen: !this.state.fullScreen });
   };
 
   componentDidMount() {
-    const handlePress = this.handlePress;
-    window.addEventListener("keypress", function (e) {
-      if (logKey(e) !== false) {
-        handlePress(logKey(e));
-      }
-    });
+    window.addEventListener("keypress", this.handlePress);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("keypress", this.handlePress);
   }
 
   render() {
@@ -255,7 +269,7 @@ class App extends Component {
       activePlayer: this.state.activePlayer,
       onClick: this.setActivePlayer,
     };
-    const selectProps = {
+    const settingsProps = {
       players: this.state.players,
       handleSelect: this.handleSelect,
       onChange: this.setPlayerNames,
@@ -299,12 +313,14 @@ class App extends Component {
           }
           right={
             <div>
+              <DiceRollDisplay value={lastRoll} onClick={this.rollDie} />
               <DiceRoller
-                onClick={this.handlePress}
-                targetId="dice-roll-container"
+                key={this.chartID}
+                onClick={this.rollDie}
+                rolls={this.state.diceRolls}
               />
               <DiceInput {...diceProps} />
-              <Settings {...selectProps} />
+              <Settings {...settingsProps} />
             </div>
           }
         />

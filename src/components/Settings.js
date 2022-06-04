@@ -19,7 +19,12 @@ const PlayerInputAutoSelect = (props) => {
   };
   return (
     <Box className="mt-3 mb-4">
-      <TextField inputRef={inputEl} onFocus={handleFocus} {...props} />
+      <TextField
+        inputRef={inputEl}
+        onFocus={handleFocus}
+        {...props}
+        InputProps={{ sx: { fontSize: ".9rem" } }}
+      />
     </Box>
   );
 };
@@ -40,6 +45,7 @@ const Settings = ({ onChange, handleSelect }) => {
   };
 
   const handleNameChange = (e) => {
+    e.preventDefault();
     const id = e.target.id;
     const value = e.target.value;
     switch (id) {
@@ -78,86 +84,93 @@ const Settings = ({ onChange, handleSelect }) => {
   };
 
   return (
-    <Accordion disableGutters defaultExpanded square={true} variant="outlined">
-      <AccordionSummary expandIcon={<FontAwesomeIcon icon={faAngleDown} />}>
-        <Typography variant="button">Settings</Typography>
-      </AccordionSummary>
-      <AccordionDetails>
-        <PlayerSelect playerCount={totalPlayers} onChange={handleInput} />
-        {totalPlayers > 0 && (
-          <PlayerInputAutoSelect
-            fullWidth
-            size="small"
-            value={player1}
-            id="0"
-            label="Player Name"
-            onChange={handleNameChange}
-          />
-        )}
-        {totalPlayers > 1 && (
-          <PlayerInputAutoSelect
-            fullWidth
-            size="small"
-            value={player2}
-            id="1"
-            label="Player Name"
-            onChange={handleNameChange}
-          />
-        )}
-        {totalPlayers > 2 && (
-          <PlayerInputAutoSelect
-            fullWidth
-            size="small"
-            value={player3}
-            id="2"
-            label="Player Name"
-            onChange={handleNameChange}
-          />
-        )}
-        {totalPlayers > 3 && (
-          <PlayerInputAutoSelect
-            fullWidth
-            size="small"
-            value={player4}
-            id="3"
-            label="Player Name"
-            onChange={handleNameChange}
-          />
-        )}
-        {totalPlayers > 4 && (
-          <PlayerInputAutoSelect
-            fullWidth
-            size="small"
-            value={player5}
-            id="4"
-            label="Player Name"
-            onChange={handleNameChange}
-          />
-        )}
-        {totalPlayers > 5 && (
-          <PlayerInputAutoSelect
-            fullWidth
-            size="small"
-            value={player6}
-            id="5"
-            label="Player Name"
-            onChange={handleNameChange}
-          />
-        )}
-        <div className="d-flex justify-content-end">
-          <Button
-            fullWidth
-            variant="outlined"
-            onClick={resetPlayers}
-            type="reset"
-            value="Clear"
-            size="small"
-          >
-            Clear Names <FontAwesomeIcon icon={faTrashCan} className="ms-2" />
-          </Button>
-        </div>
-      </AccordionDetails>
-    </Accordion>
+    <Box>
+      <Accordion
+        disableGutters
+        defaultExpanded
+        square={true}
+        variant="outlined"
+      >
+        <AccordionSummary expandIcon={<FontAwesomeIcon icon={faAngleDown} />}>
+          <Typography variant="button">Settings</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <PlayerSelect playerCount={totalPlayers} onChange={handleInput} />
+          {totalPlayers > 0 && (
+            <PlayerInputAutoSelect
+              fullWidth
+              size="small"
+              value={player1}
+              id="0"
+              label="Player Name"
+              onChange={handleNameChange}
+            />
+          )}
+          {totalPlayers > 1 && (
+            <PlayerInputAutoSelect
+              fullWidth
+              size="small"
+              value={player2}
+              id="1"
+              label="Player Name"
+              onChange={handleNameChange}
+            />
+          )}
+          {totalPlayers > 2 && (
+            <PlayerInputAutoSelect
+              fullWidth
+              size="small"
+              value={player3}
+              id="2"
+              label="Player Name"
+              onChange={handleNameChange}
+            />
+          )}
+          {totalPlayers > 3 && (
+            <PlayerInputAutoSelect
+              fullWidth
+              size="small"
+              value={player4}
+              id="3"
+              label="Player Name"
+              onChange={handleNameChange}
+            />
+          )}
+          {totalPlayers > 4 && (
+            <PlayerInputAutoSelect
+              fullWidth
+              size="small"
+              value={player5}
+              id="4"
+              label="Player Name"
+              onChange={handleNameChange}
+            />
+          )}
+          {totalPlayers > 5 && (
+            <PlayerInputAutoSelect
+              fullWidth
+              size="small"
+              value={player6}
+              id="5"
+              label="Player Name"
+              onChange={handleNameChange}
+            />
+          )}
+          <div className="d-flex justify-content-end">
+            <Button
+              fullWidth
+              variant="outlined"
+              onClick={resetPlayers}
+              type="reset"
+              value="Clear"
+              size="small"
+            >
+              Clear Names <FontAwesomeIcon icon={faTrashCan} className="ms-2" />
+            </Button>
+          </div>
+        </AccordionDetails>
+      </Accordion>
+    </Box>
   );
 };
 export default Settings;

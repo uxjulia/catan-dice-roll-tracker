@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import PropTypes from "prop-types";
+import Typography from "@mui/material/Typography";
 // Select the number of players
 const PlayerSelect = ({ playerCount, onChange }) => {
   return (
@@ -18,13 +19,41 @@ const PlayerSelect = ({ playerCount, onChange }) => {
           value={playerCount}
           onChange={onChange}
         >
-          <MenuItem value={0}>--- Select ---</MenuItem>
-          <MenuItem value={1}>1</MenuItem>
-          <MenuItem value={2}>2</MenuItem>
-          <MenuItem value={3}>3</MenuItem>
-          <MenuItem value={4}>4</MenuItem>
-          <MenuItem value={5}>5</MenuItem>
-          <MenuItem value={6}>6</MenuItem>
+          <MenuItem value={0}>
+            <Typography variant="body2" component="span">
+              --- Select ---
+            </Typography>
+          </MenuItem>
+          <MenuItem value={1}>
+            <Typography variant="body2" component="span">
+              1
+            </Typography>
+          </MenuItem>
+          <MenuItem value={2}>
+            <Typography variant="body2" component="span">
+              2
+            </Typography>
+          </MenuItem>
+          <MenuItem value={3}>
+            <Typography variant="body2" component="span">
+              3
+            </Typography>
+          </MenuItem>
+          <MenuItem value={4}>
+            <Typography variant="body2" component="span">
+              4
+            </Typography>
+          </MenuItem>
+          <MenuItem value={5}>
+            <Typography variant="body2" component="span">
+              5
+            </Typography>
+          </MenuItem>
+          <MenuItem value={6}>
+            <Typography variant="body2" component="span">
+              6
+            </Typography>
+          </MenuItem>
         </Select>
       </FormControl>
     </Box>

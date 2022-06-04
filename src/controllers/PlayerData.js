@@ -102,7 +102,7 @@ class PlayerData extends Component {
     const activePlayer = this.props.activePlayer;
     const nextPlayerName = this.props.players[activePlayer];
     return (
-      <div key={activePlayer} className="mb-3">
+      <div key={activePlayer} className="mb-1">
         {players.length !== 0 && (
           <div className="d-flex justify-content-center">
             <div>

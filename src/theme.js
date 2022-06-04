@@ -4,10 +4,6 @@ import PropTypes from "prop-types";
 
 const theme = createTheme({
   typography: {
-    h3: {
-      fontFamily: "Oswald",
-      lineHeight: "1.1",
-    },
     fontFamily: [
       "-apple-system",
       "BlinkMacSystemFont",
