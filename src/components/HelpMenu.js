@@ -1,5 +1,4 @@
 import React from "react";
-// import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Dialog from "@mui/material/Dialog";
 import PropTypes from "prop-types";
