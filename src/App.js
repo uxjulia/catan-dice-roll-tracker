@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap-reboot.css";
 import "bootstrap/dist/css/bootstrap-grid.css";
 import "bootstrap/dist/css/bootstrap-utilities.css";
+import CssBaseline from "@mui/material/CssBaseline";
 import update from "immutability-helper";
 import _ from "lodash";
 import ChartController from "./controllers/ChartController";
@@ -24,6 +25,7 @@ import DiceRollDisplay from "./components/DiceRollDisplay";
 import Chance from "chance";
 let chance = new Chance();
 import HelpMenu from "./components/HelpMenu";
+import { Typography } from "@mui/material";
 
 const ExpansionIconWrapper = styled.div`
 @media only screen and (max-width: 576px) {
@@ -33,7 +35,7 @@ const ExpansionIconWrapper = styled.div`
 })`;
 
 function testLog(n) {
-  if (n === "roll") {
+  if (n === "roll" || n === "undo" || n === "new") {
     return true;
   } else {
     const x = Number(n);
@@ -59,6 +61,12 @@ function keyCode(x) {
     case " ":
       n = "roll";
       break;
+    case "z":
+      n = "undo";
+      break;
+    case "n":
+      n = "new";
+      break;
     default:
       n = x;
       break;
@@ -75,7 +83,6 @@ function logKey(event) {
     if (event.which) {
       return keyCode(String.fromCharCode(event.keyCode)); // IE
     } else if (event.which !== 0 && event.charCode !== 0) {
-      // return keyCode(String.fromCharCode(event.which)); // All other browsers
       return keyCode(event.key);
     } else {
       return null; // Special Key
@@ -93,7 +100,7 @@ function nextPlayer(activePlayer, option) {
       x = activePlayer - 1;
       break;
     default:
-      x = activePlayer + 1;
+      x = activePlayer;
   }
   return x;
 }
@@ -130,6 +137,7 @@ const defaultState = {
   showDiceInput: true,
   showNumPadInput: true,
   displayHelpMenu: false,
+  lastPlayer: "",
 };
 
 class App extends Component {
@@ -145,6 +153,16 @@ class App extends Component {
     data[x] = e.target.value;
     this.setState({ players: data });
   };
+
+  setLastPlayer = () => {
+    if (this.state.log.length === 0) {
+      this.setState({ lastPlayer: this.state.players[0] });
+    } else {
+      let lastPlayer = this.state.activePlayer;
+      this.setState({ lastPlayer: this.state.players[lastPlayer] });
+    }
+  };
+
   setActivePlayer = (e, option) => {
     if (e) {
       this.setState({ activePlayer: Number(e.target.id) });
@@ -160,6 +178,7 @@ class App extends Component {
         this.setState({ activePlayer: next });
       }
     }
+    if (this.state.players.length) this.setLastPlayer();
   };
   handleClick = (e) => {
     const index = Number(e.target.id) - 2;
@@ -173,10 +192,19 @@ class App extends Component {
   handlePress = (e) => {
     if (e.target.nodeName === "BODY") {
       let n = logKey(e);
-      if (n === "roll") {
-        this.rollDie();
-      } else if (n !== false) {
-        this.setRoll(n);
+      if (n === false) return;
+      switch (n) {
+        case "roll":
+          this.rollDie();
+          break;
+        case "undo":
+          this.handleUndo();
+          break;
+        case "new":
+          this.handleReset();
+          break;
+        default:
+          this.setRoll(n);
       }
     }
   };
@@ -191,6 +219,7 @@ class App extends Component {
   };
 
   handleUndo = () => {
+    if (this.state.log.length === 0) return;
     const log = this.state.log;
     const lastRoll = _.head(log) - 2;
     const rolls = this.state.rolls;
@@ -209,6 +238,7 @@ class App extends Component {
       log: [],
       activePlayer: 0,
       diceRolls: [],
+      lastPlayer: "",
     });
   };
 
@@ -275,11 +305,13 @@ class App extends Component {
       data: this.state.rolls,
     };
     const playerProps = {
+      state: this.state,
       players: this.state.players,
       activePlayer: this.state.activePlayer,
       onClick: this.setActivePlayer,
     };
     const settingsProps = {
+      state: this.state,
       toggles: {
         diceInput: this.state.showDiceInput,
         numPadInput: this.state.showNumPadInput,
@@ -295,79 +327,126 @@ class App extends Component {
       handleMenuVisibility: this.handleMenuVisibility,
     };
     return (
-      <CustomTheme>
-        <SiteLayout
-          fullScreen={this.state.fullScreen}
-          left={
-            <div className="mt-2">
-              <div className="container">
-                <div className="row">
-                  <div className="col-12">
-                    <HelpMenu
-                      open={this.state.displayHelpMenu}
-                      handleVisibility={this.handleMenuVisibility}
-                    />
-                  </div>
-                </div>
-              </div>
-              <PlayerData {...playerProps} />
-              {!this.state.fullScreen && (
-                <ExpansionIconWrapper>
-                  <div className="hideForMobile">
-                    <div className="d-flex justify-content-end">
-                      <IconButton onClick={this.setFullScreen} size="small">
-                        <FontAwesomeIcon
-                          icon={faUpRightAndDownLeftFromCenter}
-                          size="sm"
-                        />
-                      </IconButton>
+      <>
+        <CssBaseline />
+        <CustomTheme>
+          <SiteLayout
+            fullScreen={this.state.fullScreen}
+            left={
+              <div className="mt-2">
+                <div className="container">
+                  <div className="row">
+                    <div className="col-12">
+                      <HelpMenu
+                        open={this.state.displayHelpMenu}
+                        handleVisibility={this.handleMenuVisibility}
+                      />
                     </div>
                   </div>
-                </ExpansionIconWrapper>
-              )}
-              {this.state.fullScreen && (
-                <div className="d-flex justify-content-end">
-                  <IconButton onClick={this.setFullScreen} size="small">
-                    <FontAwesomeIcon
-                      icon={faDownLeftAndUpRightToCenter}
-                      size="sm"
-                    />
-                  </IconButton>
                 </div>
-              )}
-              <ChartController {...chartProps} />
-              <LoggedRolls data={this.state.log} />
-            </div>
-          }
-          right={
-            <div>
-              {this.state.showDiceInput && (
-                <>
-                  <DiceRollDisplay value={lastRoll} onClick={this.rollDie} />
-                  <DiceRoller
-                    key={this.chartID}
-                    onClick={this.rollDie}
-                    rolls={this.state.diceRolls}
-                  />
-                </>
-              )}
-              {this.state.showNumPadInput && <DiceInput {...diceProps} />}
-              <Button
-                className="mt-2 mb-3 px-2"
-                variant="contained"
-                fullWidth
-                onClick={this.handleReset}
-                key="reset"
-                id="reset"
-              >
-                Start New Game
-              </Button>
-              <Settings {...settingsProps} />
-            </div>
-          }
-        />
-      </CustomTheme>
+                <div className="container">
+                  <div className="row">
+                    {this.state.fullScreen && (
+                      <div className="col">
+                        {this.state.lastPlayer !== "" && (
+                          <Typography
+                            color="primary"
+                            align="center"
+                            sx={{ marginBottom: ".5rem" }}
+                          >
+                            {this.state.lastPlayer} rolled
+                          </Typography>
+                        )}
+                        <DiceRollDisplay
+                          value={lastRoll}
+                          onClick={this.rollDie}
+                        />
+                        {this.state.showDiceInput && (
+                          <DiceRoller
+                            key={this.chartID}
+                            onClick={this.rollDie}
+                            rolls={this.state.diceRolls}
+                          />
+                        )}
+                      </div>
+                    )}
+                    {this.state.players.length > 0 && (
+                      <div className="col d-flex flex-column justify-content-center">
+                        <PlayerData {...playerProps} />
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {!this.state.fullScreen && (
+                  <ExpansionIconWrapper>
+                    <div className="hideForMobile">
+                      <div className="d-flex justify-content-end">
+                        <IconButton onClick={this.setFullScreen} size="small">
+                          <FontAwesomeIcon
+                            icon={faUpRightAndDownLeftFromCenter}
+                            size="sm"
+                          />
+                        </IconButton>
+                      </div>
+                    </div>
+                  </ExpansionIconWrapper>
+                )}
+                {this.state.fullScreen && (
+                  <div className="d-flex justify-content-end">
+                    <IconButton onClick={this.setFullScreen} size="small">
+                      <FontAwesomeIcon
+                        icon={faDownLeftAndUpRightToCenter}
+                        size="sm"
+                      />
+                    </IconButton>
+                  </div>
+                )}
+                <ChartController {...chartProps} />
+                <LoggedRolls data={this.state.log} />
+              </div>
+            }
+            right={
+              <div>
+                {this.state.showDiceInput && (
+                  <>
+                    {this.state.lastPlayer !== "" && (
+                      <Typography
+                        color="primary"
+                        align="center"
+                        sx={{ marginBottom: ".5rem" }}
+                      >
+                        {this.state.lastPlayer} rolled a
+                      </Typography>
+                    )}
+                    <DiceRollDisplay value={lastRoll} onClick={this.rollDie} />
+                    <DiceRoller
+                      key={this.chartID}
+                      onClick={this.rollDie}
+                      rolls={this.state.diceRolls}
+                    />
+                  </>
+                )}
+                {this.state.showNumPadInput && <DiceInput {...diceProps} />}
+                <Button
+                  className="mt-2 mb-3 px-2"
+                  variant="contained"
+                  fullWidth
+                  onClick={this.handleReset}
+                  key="reset"
+                  id="reset"
+                >
+                  Start New Game
+                </Button>
+                <Settings {...settingsProps} />
+              </div>
+            }
+          />
+        </CustomTheme>
+      </>
     );
   }
 }
 export default App;
+
+// TODO: Remove extra props if component can get it from the state prop

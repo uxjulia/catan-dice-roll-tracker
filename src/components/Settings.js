@@ -78,7 +78,7 @@ const Settings = ({
   };
 
   return (
-    <Box>
+    <Box mb={1}>
       <Accordion
         disableGutters
         defaultExpanded
