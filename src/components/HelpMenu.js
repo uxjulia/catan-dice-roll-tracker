@@ -41,36 +41,57 @@ const HelpMenu = ({ open = false, handleVisibility }) => {
           <div className="row">
             <div className="col-sm-12">
               <div className="d-flex align-items-center justify-content-between">
-                <KeyboardKey top="!" bottom="1" value="1" />
-                <KeyboardKey top="@" bottom="2" value="2" />
-                <KeyboardKey top="#" bottom="3" value="3" />
+                <KeyboardKey top="!" bottom="1" value="= 1" />
+                <KeyboardKey top="@" bottom="2" value="= 2" />
+                <KeyboardKey top="#" bottom="3" value="= 3" />
               </div>
             </div>
           </div>
           <div className="row">
             <div className="col-sm-12">
               <div className="d-flex align-items-center justify-content-between">
-                <KeyboardKey top="$" bottom="4" value="4" />
-                <KeyboardKey top="%" bottom="5" value="5" />
-                <KeyboardKey top="^" bottom="6" value="6" />
+                <KeyboardKey top="$" bottom="4" value="= 4" />
+                <KeyboardKey top="%" bottom="5" value="= 5" />
+                <KeyboardKey top="^" bottom="6" value="= 6" />
               </div>
             </div>
           </div>
           <div className="row">
             <div className="col-sm-12">
               <div className="d-flex align-items-center justify-content-between">
-                <KeyboardKey top="&" bottom="7" value="7" />
-                <KeyboardKey top="*" bottom="8" value="8" />
-                <KeyboardKey top="(" bottom="9" value="9" />
+                <KeyboardKey top="&" bottom="7" value="= 7" />
+                <KeyboardKey top="*" bottom="8" value="= 8" />
+                <KeyboardKey top="(" bottom="9" value="= 9" />
               </div>
             </div>
           </div>
           <div className="row">
             <div className="col-sm-12">
               <div className="d-flex align-items-center justify-content-between">
-                <KeyboardKey top=")" bottom="0" value="10" />
-                <KeyboardKey top="_" bottom="-" value="11" />
-                <KeyboardKey top="+" bottom="=" value="12" />
+                <KeyboardKey top=")" bottom="0" value="= 10" />
+                <KeyboardKey top="_" bottom="-" value="= 11" />
+                <KeyboardKey top="+" bottom="=" value="= 12" />
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="d-flex align-items-center justify-content-between">
+                <KeyboardKey top="N" value={`New Game`} single />
+                <KeyboardKey top="Z" value={`Undo`} single />
+                <span style={{ width: "140px" }}></span>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="d-flex align-items-center justify-content-between">
+                <KeyboardKey
+                  width="175px"
+                  top="Space Bar"
+                  value="Roll Virtual Dice"
+                  single
+                />
               </div>
             </div>
           </div>
@@ -80,18 +101,26 @@ const HelpMenu = ({ open = false, handleVisibility }) => {
   );
 };
 
-const KeyboardKey = ({ top, bottom, value }) => {
+const KeyboardKey = ({
+  width = "50px",
+  top,
+  bottom,
+  value,
+  single = false,
+}) => {
   const style = {
-    minWidth: "50px",
+    minWidth: width,
     maxWidth: "50px",
     minHeight: "50px",
     maxHeight: "50px",
-    border: "1px solid #3a3a3a",
-    borderRadius: "3px",
+    border: "1px solid rgba(0,0,0,0.1)",
+    borderRadius: "5px",
     padding: "5px",
     fontSize: ".75rem",
     margin: "5px",
     display: "inline-block",
+    boxShadow:
+      "rgba(0, 0, 0, 0.1) 0px -1px 0px 3px inset, rgba(0, 0, 0, 0.3) 0px 0px 0px 1px",
   };
   return (
     <div
@@ -100,17 +129,26 @@ const KeyboardKey = ({ top, bottom, value }) => {
     >
       <div
         style={style}
-        className="d-flex flex-column align-items-center justify-content-between"
+        className={`d-flex align-items-center ${
+          single ? "justify-content-center" : "justify-content-between"
+        } ${!single && "flex-column"}`}
       >
-        <span>{top}</span>
-        <span>{bottom}</span>
+        {!single && (
+          <>
+            <span>{top}</span>
+            <span>{bottom}</span>
+          </>
+        )}
+        {single && <span>{top}</span>}
       </div>
-      <Typography color="#b02c2c" variant="body2">{`= ${value}`}</Typography>
+      <Typography color="#b02c2c" variant="body2">{`${value}`}</Typography>
     </div>
   );
 };
 
 KeyboardKey.propTypes = {
+  single: PropTypes.bool,
+  width: PropTypes.string,
   top: PropTypes.string,
   bottom: PropTypes.string,
   value: PropTypes.string,
