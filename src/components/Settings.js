@@ -1,6 +1,5 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -14,20 +13,11 @@ import { faAngleDown } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
 import PlayerSelect from "./PlayerSelect";
-
-const PlayerInputAutoSelect = (props) => {
-  const inputEl = React.useRef(null);
-  const handleFocus = () => {
-    inputEl.current.select();
-  };
-  return (
-    <Box className="mt-3 mb-4">
-      <TextField inputRef={inputEl} onFocus={handleFocus} {...props} />
-    </Box>
-  );
-};
+import InputField from "./InputField";
 
 const Settings = ({
+  handleResourceTrackerVisibility,
+  state,
   onChange,
   handleSelect,
   handleDiceToggle,
@@ -35,48 +25,7 @@ const Settings = ({
   handleMenuVisibility,
   toggles,
 }) => {
-  const [totalPlayers, setTotalPlayers] = React.useState(0);
-  const [player1, setPlayer1] = React.useState("Player 1");
-  const [player2, setPlayer2] = React.useState("Player 2");
-  const [player3, setPlayer3] = React.useState("Player 3");
-  const [player4, setPlayer4] = React.useState("Player 4");
-  const [player5, setPlayer5] = React.useState("Player 5");
-  const [player6, setPlayer6] = React.useState("Player 6");
-  const handleInput = (e) => {
-    const value = e.target.value === "Clear" ? totalPlayers : e.target.value;
-    setTotalPlayers(value);
-    handleSelect(e);
-  };
-
-  const handleNameChange = (e) => {
-    e.preventDefault();
-    const id = e.target.id;
-    const value = e.target.value;
-    switch (id) {
-      case "0":
-        setPlayer1(value);
-        break;
-      case "1":
-        setPlayer2(value);
-        break;
-      case "2":
-        setPlayer3(value);
-        break;
-      case "3":
-        setPlayer4(value);
-        break;
-      case "4":
-        setPlayer5(value);
-        break;
-      case "5":
-        setPlayer6(value);
-        break;
-      default:
-        break;
-    }
-    onChange(e);
-  };
-
+  const showResourceTracker = false;
   return (
     <Box mb={1}>
       <Accordion
@@ -93,65 +42,68 @@ const Settings = ({
             <Chip label="Players" size="small" />
           </Divider>
           <Box my={2}>
-            <PlayerSelect playerCount={totalPlayers} onChange={handleInput} />
-            {totalPlayers > 0 && (
-              <PlayerInputAutoSelect
+            <PlayerSelect
+              playerCount={state.players.length}
+              onChange={handleSelect}
+            />
+            {state.players.length > 0 && (
+              <InputField
                 fullWidth
                 size="small"
-                value={player1}
+                value={state.players[0]}
                 id="0"
                 label="Player Name"
-                onChange={handleNameChange}
+                onChange={onChange}
               />
             )}
-            {totalPlayers > 1 && (
-              <PlayerInputAutoSelect
+            {state.players.length > 1 && (
+              <InputField
                 fullWidth
                 size="small"
-                value={player2}
+                value={state.players[1]}
                 id="1"
                 label="Player Name"
-                onChange={handleNameChange}
+                onChange={onChange}
               />
             )}
-            {totalPlayers > 2 && (
-              <PlayerInputAutoSelect
+            {state.players.length > 2 && (
+              <InputField
                 fullWidth
                 size="small"
-                value={player3}
+                value={state.players[2]}
                 id="2"
                 label="Player Name"
-                onChange={handleNameChange}
+                onChange={onChange}
               />
             )}
-            {totalPlayers > 3 && (
-              <PlayerInputAutoSelect
+            {state.players.length > 3 && (
+              <InputField
                 fullWidth
                 size="small"
-                value={player4}
+                value={state.players[3]}
                 id="3"
                 label="Player Name"
-                onChange={handleNameChange}
+                onChange={onChange}
               />
             )}
-            {totalPlayers > 4 && (
-              <PlayerInputAutoSelect
+            {state.players.length > 4 && (
+              <InputField
                 fullWidth
                 size="small"
-                value={player5}
+                value={state.players[4]}
                 id="4"
                 label="Player Name"
-                onChange={handleNameChange}
+                onChange={onChange}
               />
             )}
-            {totalPlayers > 5 && (
-              <PlayerInputAutoSelect
+            {state.players.length > 5 && (
+              <InputField
                 fullWidth
                 size="small"
-                value={player6}
+                value={state.players[5]}
                 id="5"
                 label="Player Name"
-                onChange={handleNameChange}
+                onChange={onChange}
               />
             )}
           </Box>
@@ -191,6 +143,19 @@ const Settings = ({
               View Keyboard Shortcuts
             </Button>
           </Box>
+          {showResourceTracker && (
+            <Box mt={2}>
+              <Button
+                id="keyboard-shortcuts"
+                title="View keyboard shortcuts"
+                variant="text"
+                size="small"
+                onClick={() => handleResourceTrackerVisibility(true)}
+              >
+                Enter Resources
+              </Button>
+            </Box>
+          )}
         </AccordionDetails>
       </Accordion>
     </Box>
@@ -199,11 +164,13 @@ const Settings = ({
 export default Settings;
 
 Settings.propTypes = {
+  state: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   handleSelect: PropTypes.func.isRequired,
   handleDiceToggle: PropTypes.func.isRequired,
   handleNumPadToggle: PropTypes.func.isRequired,
   handleMenuVisibility: PropTypes.func.isRequired,
+  handleResourceTrackerVisibility: PropTypes.func.isRequired,
   toggles: PropTypes.shape({
     numPadInput: PropTypes.bool,
     diceInput: PropTypes.bool,

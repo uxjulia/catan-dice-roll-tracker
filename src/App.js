@@ -26,6 +26,7 @@ import DiceRollDisplay from "./components/DiceRollDisplay";
 import Chance from "chance";
 let chance = new Chance();
 import HelpMenu from "./components/HelpMenu";
+import ResourceTracker from "./components/ResourceTracker";
 
 const ExpansionIconWrapper = styled.div`
 @media only screen and (max-width: 576px) {
@@ -134,12 +135,27 @@ const defaultState = {
   players: [],
   rolls: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   log: [],
+  resources: {
+    1: [],
+    2: [],
+    3: [],
+    4: [],
+    5: [],
+    6: [],
+    7: [],
+    8: [],
+    9: [],
+    10: [],
+    11: [],
+    12: [],
+  },
   activePlayer: 0,
   fullScreen: false,
   diceRolls: [],
   showDiceInput: true,
   showNumPadInput: true,
   displayHelpMenu: false,
+  displayResourceTracker: false,
   lastPlayer: "",
 };
 
@@ -149,6 +165,8 @@ class App extends Component {
     this.chartID = 1;
     this.state = defaultState;
     this.clearNames = 0;
+    this.handleResourceTrackerVisibility =
+      this.handleResourceTrackerVisibility.bind(this);
   }
   setPlayerNames = (e) => {
     const data = this.state.players;
@@ -249,13 +267,6 @@ class App extends Component {
     });
   };
 
-  clearPlayerNames = () => {
-    const total = this.state.players.length;
-    const players = this.state.players;
-    const newPlayerArr = resetPlayers(total, total, players);
-    const newPlayers = update(players, { $set: newPlayerArr });
-    this.setState({ players: newPlayers, clearNames: this.clearNames++ });
-  };
   handleSelect = (e) => {
     const oldTotal = this.state.players.length;
     let newTotal =
@@ -288,6 +299,17 @@ class App extends Component {
   handleMenuVisibility = (visible) => {
     this.setState({ displayHelpMenu: visible });
   };
+  handleResourceTrackerVisibility = (visible) => {
+    this.setState({ displayResourceTracker: visible });
+  };
+
+  setResource = (tileValue, value) => {
+    console.log(+tileValue, value);
+    const index = +tileValue;
+    this.setState({
+      resources: update(this.state.resources, { [index]: { $push: [value] } }),
+    });
+  };
 
   componentDidMount() {
     window.document.addEventListener("keydown", this.handlePress);
@@ -302,9 +324,7 @@ class App extends Component {
     const lastRoll = _.head(log);
     const diceProps = {
       undo: this.handleUndo,
-      onReset: this.handleReset,
       onClick: this.handleClick,
-      log: log,
     };
     const chartProps = {
       chartID: this.chartID,
@@ -332,6 +352,7 @@ class App extends Component {
       handleNumPadToggle: (option) => {
         this.setState({ showNumPadInput: option });
       },
+      handleResourceTrackerVisibility: this.handleResourceTrackerVisibility,
       handleMenuVisibility: this.handleMenuVisibility,
     };
     return (
@@ -342,16 +363,45 @@ class App extends Component {
             fullScreen={this.state.fullScreen}
             left={
               <div className="mt-2">
-                <div className="container">
-                  <div className="row">
-                    <div className="col-12">
-                      <HelpMenu
-                        open={this.state.displayHelpMenu}
-                        handleVisibility={this.handleMenuVisibility}
-                      />
+                <HelpMenu
+                  open={this.state.displayHelpMenu}
+                  handleVisibility={this.handleMenuVisibility}
+                />
+                <ResourceTracker
+                  resources={this.state.resources}
+                  onChange={this.setResource}
+                  open={this.state.displayResourceTracker}
+                  handleVisibility={this.handleResourceTrackerVisibility}
+                />
+                {!this.state.fullScreen && (
+                  <ExpansionIconWrapper>
+                    <div className="hideForMobile">
+                      <div className="d-flex justify-content-end">
+                        <IconButton
+                          id="expand-chart-button"
+                          title="Expand Chart Area"
+                          onClick={this.setFullScreen}
+                          size="small"
+                        >
+                          <FontAwesomeIcon
+                            icon={faUpRightAndDownLeftFromCenter}
+                            size="sm"
+                          />
+                        </IconButton>
+                      </div>
                     </div>
+                  </ExpansionIconWrapper>
+                )}
+                {this.state.fullScreen && (
+                  <div className="d-flex justify-content-end">
+                    <IconButton onClick={this.setFullScreen} size="small">
+                      <FontAwesomeIcon
+                        icon={faDownLeftAndUpRightToCenter}
+                        size="sm"
+                      />
+                    </IconButton>
                   </div>
-                </div>
+                )}
                 <div className="container">
                   <div className="row">
                     {this.state.fullScreen && (
@@ -385,36 +435,6 @@ class App extends Component {
                     )}
                   </div>
                 </div>
-
-                {!this.state.fullScreen && (
-                  <ExpansionIconWrapper>
-                    <div className="hideForMobile">
-                      <div className="d-flex justify-content-end">
-                        <IconButton
-                          id="expand-chart-button"
-                          title="Expand Chart Area"
-                          onClick={this.setFullScreen}
-                          size="small"
-                        >
-                          <FontAwesomeIcon
-                            icon={faUpRightAndDownLeftFromCenter}
-                            size="sm"
-                          />
-                        </IconButton>
-                      </div>
-                    </div>
-                  </ExpansionIconWrapper>
-                )}
-                {this.state.fullScreen && (
-                  <div className="d-flex justify-content-end">
-                    <IconButton onClick={this.setFullScreen} size="small">
-                      <FontAwesomeIcon
-                        icon={faDownLeftAndUpRightToCenter}
-                        size="sm"
-                      />
-                    </IconButton>
-                  </div>
-                )}
                 <DiceChart {...chartProps} />
                 <LoggedRolls data={this.state.log} />
               </div>

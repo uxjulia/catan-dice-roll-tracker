@@ -8,7 +8,6 @@ const DiceRollDisplay = ({ value, onClick }) => {
     return (
       <Paper
         onClick={onClick}
-        square
         sx={{
           cursor: "pointer",
           padding: "5px",

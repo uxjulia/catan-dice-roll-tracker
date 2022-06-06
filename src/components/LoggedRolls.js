@@ -1,6 +1,7 @@
 import React from "react";
 import Card from "@mui/material/Card";
-import { CardContent } from "@mui/material";
+import CardContent from "@mui/material/CardContent";
+import Box from "@mui/material/Box";
 import _ from "lodash";
 import PropTypes from "prop-types";
 import styled from "@emotion/styled";
@@ -18,26 +19,14 @@ const Wrapper = styled.div`
 `;
 
 const LoggedRolls = ({ data }) => {
-  const [tail, setTail] = React.useState(_.tail(data));
-  const [first, setFirst] = React.useState(_.head(data));
-  const style = {
-    total: {
-      fontSize: ".8rem",
-    },
-  };
-
-  React.useEffect(() => {
-    setTail(_.tail(data));
-    setFirst(_.head(data));
-  }, [data]);
   return (
     <Card variant="outlined" id="loggedRolls" className="mb-3">
       <CardContent>
-        <div className="mb-1">
-          <span className="text-muted" style={style.total}>
+        <Box className="mb-1">
+          <Typography className="text-muted" component="span" variant="body2">
             Total Rolls: {data.length}{" "}
-          </span>
-        </div>
+          </Typography>
+        </Box>
         <Wrapper>
           <Typography mr={1} variant="body2" component="span">
             Last Roll:
@@ -54,8 +43,8 @@ const LoggedRolls = ({ data }) => {
           )}
           {data.length > 1 && (
             <span className="rolllog">
-              <span>{first}, </span>
-              <span>{_.join(tail, ", ")}</span>
+              <span>{_.head(data)}, </span>
+              <span>{_.join(_.tail(data), ", ")}</span>
             </span>
           )}
         </Wrapper>
