@@ -8,6 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import Slide from "@mui/material/Slide";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/pro-solid-svg-icons";
+import KeyboardKey from "./KeyboardKey";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -33,7 +34,7 @@ const HelpMenu = ({ open = false, handleVisibility }) => {
               <FontAwesomeIcon icon={faXmark} />
             </IconButton>
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Keyboard Usage
+              Keyboard Shortcuts
             </Typography>
           </Toolbar>
         </AppBar>
@@ -99,59 +100,6 @@ const HelpMenu = ({ open = false, handleVisibility }) => {
       </Dialog>
     </div>
   );
-};
-
-const KeyboardKey = ({
-  width = "50px",
-  top,
-  bottom,
-  value,
-  single = false,
-}) => {
-  const style = {
-    minWidth: width,
-    maxWidth: "50px",
-    minHeight: "50px",
-    maxHeight: "50px",
-    border: "1px solid rgba(0,0,0,0.1)",
-    borderRadius: "5px",
-    padding: "5px",
-    fontSize: ".75rem",
-    margin: "5px",
-    display: "inline-block",
-    boxShadow:
-      "rgba(0, 0, 0, 0.1) 0px -1px 0px 3px inset, rgba(0, 0, 0, 0.3) 0px 0px 0px 1px",
-  };
-  return (
-    <div
-      style={{ minWidth: "90px", margin: "5px" }}
-      className="d-flex align-items-center justify-content-between"
-    >
-      <div
-        style={style}
-        className={`d-flex align-items-center ${
-          single ? "justify-content-center" : "justify-content-between"
-        } ${!single && "flex-column"}`}
-      >
-        {!single && (
-          <>
-            <span>{top}</span>
-            <span>{bottom}</span>
-          </>
-        )}
-        {single && <span>{top}</span>}
-      </div>
-      <Typography color="#b02c2c" variant="body2">{`${value}`}</Typography>
-    </div>
-  );
-};
-
-KeyboardKey.propTypes = {
-  single: PropTypes.bool,
-  width: PropTypes.string,
-  top: PropTypes.string,
-  bottom: PropTypes.string,
-  value: PropTypes.string,
 };
 
 export default HelpMenu;

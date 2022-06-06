@@ -6,14 +6,14 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Divider from "@mui/material/Divider";
 import Chip from "@mui/material/Chip";
+import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import { faAngleDown, faCircleInfo } from "@fortawesome/pro-solid-svg-icons";
+import { faAngleDown } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
 import PlayerSelect from "./PlayerSelect";
-import { IconButton } from "@mui/material";
 
 const PlayerInputAutoSelect = (props) => {
   const inputEl = React.useRef(null);
@@ -181,20 +181,15 @@ const Settings = ({
             />
           </Box>
           <Box mt={2}>
-            <Typography
-              className="text-muted"
-              sx={{ fontSize: ".75rem", lineHeight: ".7rem" }}
+            <Button
+              id="keyboard-shortcuts"
+              title="View keyboard shortcuts"
+              variant="text"
+              size="small"
+              onClick={() => handleMenuVisibility(true)}
             >
-              Hint: You can use the number row on a keyboard to enter dice
-              rolls.{" "}
-              <IconButton onClick={() => handleMenuVisibility(true)}>
-                <FontAwesomeIcon
-                  size="2xs"
-                  icon={faCircleInfo}
-                  style={{ color: "#203c58" }}
-                />
-              </IconButton>
-            </Typography>
+              View Keyboard Shortcuts
+            </Button>
           </Box>
         </AccordionDetails>
       </Accordion>

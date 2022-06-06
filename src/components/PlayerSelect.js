@@ -6,7 +6,7 @@ import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import PropTypes from "prop-types";
 import Typography from "@mui/material/Typography";
-// Select the number of players
+
 const PlayerSelect = ({ playerCount, onChange }) => {
   return (
     <Box className="mb-4">

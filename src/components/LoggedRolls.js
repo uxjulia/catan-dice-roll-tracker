@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import Card from "@mui/material/Card";
 import { CardContent } from "@mui/material";
 import _ from "lodash";
@@ -17,54 +17,52 @@ const Wrapper = styled.div`
   }
 `;
 
-class LoggedRolls extends Component {
-  render() {
-    const data = this.props.data;
-    const tail = _.tail(data);
-    const first = _.head(data);
-    const style = {
-      total: {
-        fontSize: ".8rem",
-      },
-    };
-    return (
-      <Card variant="outlined" id="loggedRolls" className="mb-3">
-        <CardContent>
-          <div className="mb-1">
-            <span className="text-muted" style={style.total}>
-              Total Rolls: {data.length}{" "}
-            </span>
-          </div>
-          <Wrapper>
-            <Typography mr={1} variant="body2" component="span">
-              Last Roll:
+const LoggedRolls = ({ data }) => {
+  const [tail, setTail] = React.useState(_.tail(data));
+  const [first, setFirst] = React.useState(_.head(data));
+  const style = {
+    total: {
+      fontSize: ".8rem",
+    },
+  };
+
+  React.useEffect(() => {
+    setTail(_.tail(data));
+    setFirst(_.head(data));
+  }, [data]);
+  return (
+    <Card variant="outlined" id="loggedRolls" className="mb-3">
+      <CardContent>
+        <div className="mb-1">
+          <span className="text-muted" style={style.total}>
+            Total Rolls: {data.length}{" "}
+          </span>
+        </div>
+        <Wrapper>
+          <Typography mr={1} variant="body2" component="span">
+            Last Roll:
+          </Typography>
+          {!data.length && (
+            <Typography className="text-muted" variant="body2" component="span">
+              No rolls yet
             </Typography>
-            {!data.length && (
-              <Typography
-                className="text-muted"
-                variant="body2"
-                component="span"
-              >
-                No rolls yet
-              </Typography>
-            )}
-            {data.length <= 1 && (
-              <Typography mr={1} variant="body2" component="span">
-                {_.join(data, ", ")}
-              </Typography>
-            )}
-            {data.length > 1 && (
-              <span className="rolllog">
-                <span>{first}, </span>
-                <span>{_.join(tail, ", ")}</span>
-              </span>
-            )}
-          </Wrapper>
-        </CardContent>
-      </Card>
-    );
-  }
-}
+          )}
+          {data.length <= 1 && (
+            <Typography mr={1} variant="body2" component="span">
+              {_.join(data, ", ")}
+            </Typography>
+          )}
+          {data.length > 1 && (
+            <span className="rolllog">
+              <span>{first}, </span>
+              <span>{_.join(tail, ", ")}</span>
+            </span>
+          )}
+        </Wrapper>
+      </CardContent>
+    </Card>
+  );
+};
 
 export default LoggedRolls;
 

@@ -2,15 +2,16 @@ import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap-reboot.css";
 import "bootstrap/dist/css/bootstrap-grid.css";
 import "bootstrap/dist/css/bootstrap-utilities.css";
-import CssBaseline from "@mui/material/CssBaseline";
-import update from "immutability-helper";
 import _ from "lodash";
+import update from "immutability-helper";
+import CssBaseline from "@mui/material/CssBaseline";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
 import ChartController from "./controllers/ChartController";
 import DiceInput from "./components/DiceInput";
 import Settings from "./components/Settings";
-import PlayerData from "./controllers/PlayerData";
-import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
+import PlayerIcons from "./components/PlayerIcons";
 import LoggedRolls from "./components/LoggedRolls";
 import SiteLayout from "./components/SiteLayout";
 import styled from "@emotion/styled";
@@ -25,7 +26,6 @@ import DiceRollDisplay from "./components/DiceRollDisplay";
 import Chance from "chance";
 let chance = new Chance();
 import HelpMenu from "./components/HelpMenu";
-import { Typography } from "@mui/material";
 
 const ExpansionIconWrapper = styled.div`
 @media only screen and (max-width: 576px) {
@@ -35,7 +35,6 @@ const ExpansionIconWrapper = styled.div`
 })`;
 
 function testLog(n) {
-  console.log("testing n", n);
   let x = n.toUpperCase();
   if (x === "ROLL" || x === "UNDO" || x === "NEW") {
     return true;
@@ -194,13 +193,11 @@ class App extends Component {
   };
 
   handlePress = (e) => {
-    console.log(e.target.nodeName, e);
     if (e.target.nodeName === "INPUT") {
       return;
     } else {
       e.preventDefault();
       let n = logKey(e);
-      console.log("handleKeyPress", n);
       if (n === false) return;
       switch (n) {
         case "ROLL":
@@ -213,6 +210,7 @@ class App extends Component {
           this.handleReset();
           break;
         default:
+          this.setState({ diceRolls: [] });
           this.setRoll(n);
       }
     }
@@ -385,7 +383,7 @@ class App extends Component {
                     )}
                     {this.state.players.length > 0 && (
                       <div className="col d-flex flex-column justify-content-center">
-                        <PlayerData {...playerProps} />
+                        <PlayerIcons {...playerProps} />
                       </div>
                     )}
                   </div>
@@ -395,7 +393,12 @@ class App extends Component {
                   <ExpansionIconWrapper>
                     <div className="hideForMobile">
                       <div className="d-flex justify-content-end">
-                        <IconButton onClick={this.setFullScreen} size="small">
+                        <IconButton
+                          id="expand-chart-button"
+                          title="Expand Chart Area"
+                          onClick={this.setFullScreen}
+                          size="small"
+                        >
                           <FontAwesomeIcon
                             icon={faUpRightAndDownLeftFromCenter}
                             size="sm"

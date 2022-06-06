@@ -4,63 +4,7 @@ import PropTypes from "prop-types";
 import { Typography } from "@mui/material";
 import { deviceType } from "detect-it";
 import styled from "@emotion/styled";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faDiceOne,
-  faDiceTwo,
-  faDiceThree,
-  faDiceFour,
-  faDiceFive,
-  faDiceSix,
-} from "@fortawesome/pro-solid-svg-icons";
-
-const Dice = ({ value, size }) => {
-  switch (value) {
-    case 1:
-      return (
-        <FontAwesomeIcon className="dice-1" size={size} icon={faDiceOne} />
-      );
-    case 2:
-      return (
-        <FontAwesomeIcon className="dice-2" size={size} icon={faDiceTwo} />
-      );
-    case 3:
-      return (
-        <FontAwesomeIcon className="dice-3" size={size} icon={faDiceThree} />
-      );
-    case 4:
-      return (
-        <FontAwesomeIcon className="dice-4" size={size} icon={faDiceFour} />
-      );
-    case 5:
-      return (
-        <FontAwesomeIcon className="dice-5" size={size} icon={faDiceFive} />
-      );
-    case 6:
-      return (
-        <FontAwesomeIcon className="dice-6" size={size} icon={faDiceSix} />
-      );
-  }
-};
-
-Dice.propTypes = {
-  value: PropTypes.number,
-  size: PropTypes.oneOf([
-    "xs",
-    "lg",
-    "sm",
-    "1x",
-    "2x",
-    "3x",
-    "4x",
-    "5x",
-    "6x",
-    "7x",
-    "8x",
-    "9x",
-    "10x",
-  ]),
-};
+import Dice from "./Dice";
 
 const Wrapper = styled.div`
   margin-bottom: 1rem;
@@ -90,7 +34,7 @@ const DiceRoller = ({ onClick, rolls = [] }) => {
   const hybrid = deviceType === "hybrid";
   return (
     <Wrapper>
-      <Box onClick={onClick} sx={{ cursor: "pointer" }} py={2}>
+      <Box role="button" onClick={onClick} sx={{ cursor: "pointer" }} py={2}>
         {rolls.length === 0 && (
           <Typography
             align="center"
