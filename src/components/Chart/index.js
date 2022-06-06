@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Chart from "chart.js";
+import { Chart as DiceChart } from "chart.js";
 import PropTypes from "prop-types";
 
 const chartSettings = {
@@ -9,7 +9,7 @@ const chartSettings = {
       label: "# of Dice Rolls",
       backgroundColor: "rgba(114,166,202,0.4)",
       borderColor: "rgba(114,166,202,.8)",
-      data: [],
+      data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     },
   ],
 };
@@ -32,12 +32,12 @@ const config = {
   },
 };
 
-class ChartController extends Component {
+class Chart extends Component {
   initChart = () => {
     const data = this.props.data;
     let ctx = document.getElementById("chart");
     chartSettings.datasets[0].data = data;
-    this.lineChart = new Chart(ctx, config);
+    this.lineChart = new DiceChart(ctx, config);
   };
 
   componentDidMount() {
@@ -57,8 +57,9 @@ class ChartController extends Component {
   }
 }
 
-export default ChartController;
+export default Chart;
 
-ChartController.propTypes = {
+Chart.propTypes = {
   data: PropTypes.array,
+  chartId: PropTypes.number,
 };

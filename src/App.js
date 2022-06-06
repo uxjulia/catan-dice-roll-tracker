@@ -8,7 +8,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
-import ChartController from "./controllers/ChartController";
+import DiceChart from "./components/Chart";
 import DiceInput from "./components/DiceInput";
 import Settings from "./components/Settings";
 import PlayerIcons from "./components/PlayerIcons";
@@ -290,15 +290,11 @@ class App extends Component {
   };
 
   componentDidMount() {
-    console.log("Adding event listener");
     window.document.addEventListener("keydown", this.handlePress);
-    // window.addEventListener("keypress", this.handlePress);
   }
 
   componentWillUnmount() {
-    console.log("Removing event listener");
     window.document.addEventListener("keydown", this.handlePress);
-    // window.removeEventListener("keypress", this.handlePress);
   }
 
   render() {
@@ -311,6 +307,7 @@ class App extends Component {
       log: log,
     };
     const chartProps = {
+      chartID: this.chartID,
       key: this.chartID,
       lastRoll: lastRoll,
       data: this.state.rolls,
@@ -418,7 +415,7 @@ class App extends Component {
                     </IconButton>
                   </div>
                 )}
-                <ChartController {...chartProps} />
+                <DiceChart {...chartProps} />
                 <LoggedRolls data={this.state.log} />
               </div>
             }
