@@ -35,7 +35,9 @@ const ExpansionIconWrapper = styled.div`
 })`;
 
 function testLog(n) {
-  if (n === "roll" || n === "undo" || n === "new") {
+  console.log("testing n", n);
+  let x = n.toUpperCase();
+  if (x === "ROLL" || x === "UNDO" || x === "NEW") {
     return true;
   } else {
     const x = Number(n);
@@ -59,13 +61,15 @@ function keyCode(x) {
       n = "12";
       break;
     case " ":
-      n = "roll";
+      n = "ROLL";
       break;
     case "z":
-      n = "undo";
+    case "Z":
+      n = "UNDO";
       break;
     case "n":
-      n = "new";
+    case "N":
+      n = "NEW";
       break;
     default:
       n = x;
@@ -190,17 +194,22 @@ class App extends Component {
   };
 
   handlePress = (e) => {
-    if (e.target.nodeName === "BODY") {
+    console.log(e.target.nodeName, e);
+    if (e.target.nodeName === "INPUT") {
+      return;
+    } else {
+      e.preventDefault();
       let n = logKey(e);
+      console.log("handleKeyPress", n);
       if (n === false) return;
       switch (n) {
-        case "roll":
+        case "ROLL":
           this.rollDie();
           break;
-        case "undo":
+        case "UNDO":
           this.handleUndo();
           break;
-        case "new":
+        case "NEW":
           this.handleReset();
           break;
         default:
@@ -283,11 +292,15 @@ class App extends Component {
   };
 
   componentDidMount() {
-    window.addEventListener("keypress", this.handlePress);
+    console.log("Adding event listener");
+    window.document.addEventListener("keydown", this.handlePress);
+    // window.addEventListener("keypress", this.handlePress);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("keypress", this.handlePress);
+    console.log("Removing event listener");
+    window.document.addEventListener("keydown", this.handlePress);
+    // window.removeEventListener("keypress", this.handlePress);
   }
 
   render() {
