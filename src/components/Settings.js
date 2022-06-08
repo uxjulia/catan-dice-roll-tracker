@@ -25,7 +25,7 @@ const Settings = ({
   handleMenuVisibility,
   toggles,
 }) => {
-  const showResourceTracker = false;
+  const showResourceTracker = true;
   return (
     <Box mb={1}>
       <Accordion

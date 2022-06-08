@@ -48,98 +48,142 @@ const ResourceTracker = ({
             <div className="col-sm-12">
               <div className="align-items-center">
                 <ResourceInput
+                  dataId="1"
                   onChange={onChange}
-                  value={resources[1][0]}
-                  tileValue="1"
-                />
-                <ResourceInput
-                  onChange={onChange}
-                  value={resources[2][0]}
+                  value={resources[2][1]}
                   tileValue="2"
                 />
+                <hr />
                 <ResourceInput
-                  onChange={onChange}
-                  value={resources[3][0]}
-                  tileValue="3"
-                />
-                <ResourceInput
+                  dataId="1"
                   onChange={onChange}
                   value={resources[3][1]}
                   tileValue="3"
+                  rarity={2}
                 />
                 <ResourceInput
+                  dataId="2"
                   onChange={onChange}
-                  value={resources[4][0]}
-                  tileValue="4"
+                  value={resources[3][2]}
+                  tileValue="3"
+                  rarity={2}
                 />
+                <hr />
                 <ResourceInput
+                  dataId="1"
                   onChange={onChange}
                   value={resources[4][1]}
                   tileValue="4"
+                  rarity={3}
                 />
                 <ResourceInput
+                  dataId="2"
                   onChange={onChange}
-                  value={resources[5][0]}
-                  tileValue="5"
+                  value={resources[4][2]}
+                  tileValue="4"
+                  rarity={3}
                 />
+                <hr />
                 <ResourceInput
+                  dataId="1"
                   onChange={onChange}
                   value={resources[5][1]}
                   tileValue="5"
+                  rarity={4}
                 />
                 <ResourceInput
+                  dataId="2"
                   onChange={onChange}
-                  value={resources[6][0]}
-                  tileValue="6"
-                  color="#C53437"
+                  value={resources[5][2]}
+                  tileValue="5"
+                  rarity={4}
                 />
+                <hr />
                 <ResourceInput
+                  dataId="1"
                   onChange={onChange}
                   value={resources[6][1]}
                   tileValue="6"
                   color="#C53437"
+                  rarity={5}
                 />
                 <ResourceInput
+                  dataId="2"
                   onChange={onChange}
-                  value={resources[8][0]}
-                  tileValue="8"
+                  value={resources[6][2]}
+                  tileValue="6"
                   color="#C53437"
+                  rarity={5}
                 />
+                <hr />
                 <ResourceInput
+                  dataId="1"
                   onChange={onChange}
                   value={resources[8][1]}
                   tileValue="8"
                   color="#C53437"
+                  rarity={5}
                 />
                 <ResourceInput
+                  dataId="2"
                   onChange={onChange}
-                  value={resources[9][0]}
-                  tileValue="9"
+                  value={resources[8][2]}
+                  tileValue="8"
+                  color="#C53437"
+                  rarity={5}
                 />
+                <hr />
                 <ResourceInput
+                  dataId="1"
                   onChange={onChange}
                   value={resources[9][1]}
                   tileValue="9"
+                  rarity={4}
                 />
                 <ResourceInput
+                  dataId="2"
                   onChange={onChange}
-                  value={resources[10][0]}
-                  tileValue="10"
+                  value={resources[9][2]}
+                  tileValue="9"
+                  rarity={4}
                 />
+                <hr />
                 <ResourceInput
+                  dataId="1"
                   onChange={onChange}
                   value={resources[10][1]}
                   tileValue="10"
+                  rarity={3}
                 />
                 <ResourceInput
+                  dataId="2"
                   onChange={onChange}
-                  value={resources[11][0]}
+                  value={resources[10][2]}
+                  tileValue="10"
+                  rarity={3}
+                />
+                <hr />
+                <ResourceInput
+                  dataId="1"
+                  onChange={onChange}
+                  value={resources[11][1]}
                   tileValue="11"
+                  rarity={2}
                 />
                 <ResourceInput
+                  dataId="2"
                   onChange={onChange}
-                  value={resources[12][0]}
+                  value={resources[11][2]}
+                  tileValue="11"
+                  rarity={2}
+                />
+                <hr />
+                <ResourceInput
+                  dataId="1"
+                  onChange={onChange}
+                  value={resources[12][1]}
                   tileValue="12"
+                  rarity={1}
                 />
               </div>
             </div>

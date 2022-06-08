@@ -53,7 +53,7 @@ class Chart extends Component {
   }
 
   render() {
-    return <canvas id="chart" style={{ maxHeight: "60vh" }}></canvas>;
+    return <canvas id="chart" style={{ maxHeight: "50vh" }}></canvas>;
   }
 }
 

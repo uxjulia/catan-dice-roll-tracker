@@ -27,6 +27,7 @@ import Chance from "chance";
 let chance = new Chance();
 import HelpMenu from "./components/HelpMenu";
 import ResourceTracker from "./components/ResourceTracker";
+import ResourceDisplay from "./components/ResourceDisplay";
 
 const ExpansionIconWrapper = styled.div`
 @media only screen and (max-width: 576px) {
@@ -136,18 +137,16 @@ const defaultState = {
   rolls: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   log: [],
   resources: {
-    1: [],
-    2: [],
-    3: [],
-    4: [],
-    5: [],
-    6: [],
-    7: [],
-    8: [],
-    9: [],
-    10: [],
-    11: [],
-    12: [],
+    2: { 1: "" },
+    3: { 1: "", 2: "" },
+    4: { 1: "", 2: "" },
+    5: { 1: "", 2: "" },
+    6: { 1: "", 2: "" },
+    8: { 1: "", 2: "" },
+    9: { 1: "", 2: "" },
+    10: { 1: "", 2: "" },
+    11: { 1: "", 2: "" },
+    12: { 1: "" },
   },
   activePlayer: 0,
   fullScreen: false,
@@ -157,6 +156,7 @@ const defaultState = {
   displayHelpMenu: false,
   displayResourceTracker: false,
   lastPlayer: "",
+  resourceDescription: [],
 };
 
 class App extends Component {
@@ -208,6 +208,7 @@ class App extends Component {
     let log = update(this.state.log, { $unshift: [e.target.id] });
     this.setState({ rolls: rolls, log: log });
     this.setActivePlayer(null, "next");
+    this.getResources(+e.target.id);
   };
 
   handlePress = (e) => {
@@ -241,6 +242,7 @@ class App extends Component {
     let log = update(this.state.log, { $unshift: [n] });
     this.setState({ rolls: rolls, log: log });
     this.setActivePlayer(null, "next");
+    this.getResources(+n);
   };
 
   handleUndo = () => {
@@ -264,6 +266,19 @@ class App extends Component {
       activePlayer: 0,
       diceRolls: [],
       lastPlayer: "",
+      resourceDescription: [],
+      resources: {
+        2: { 1: "" },
+        3: { 1: "", 2: "" },
+        4: { 1: "", 2: "" },
+        5: { 1: "", 2: "" },
+        6: { 1: "", 2: "" },
+        8: { 1: "", 2: "" },
+        9: { 1: "", 2: "" },
+        10: { 1: "", 2: "" },
+        11: { 1: "", 2: "" },
+        12: { 1: "" },
+      },
     });
   };
 
@@ -303,12 +318,27 @@ class App extends Component {
     this.setState({ displayResourceTracker: visible });
   };
 
-  setResource = (tileValue, value) => {
-    console.log(+tileValue, value);
+  setResource = (tileValue, count, value) => {
     const index = +tileValue;
     this.setState({
-      resources: update(this.state.resources, { [index]: { $push: [value] } }),
+      resources: update(this.state.resources, {
+        [index]: { [count]: { $set: value } },
+      }),
     });
+  };
+
+  getResources = (value) => {
+    // get resources based on the dice roll
+    const resources = this.state.resources;
+    const obj = resources[value];
+    let res = [];
+    for (let key in obj) {
+      if (obj[key] !== "") {
+        res.push(obj[key]);
+      }
+    }
+    this.setState({ resourceDescription: res });
+    return res;
   };
 
   componentDidMount() {
@@ -362,7 +392,7 @@ class App extends Component {
           <SiteLayout
             fullScreen={this.state.fullScreen}
             left={
-              <div className="mt-2">
+              <div>
                 <HelpMenu
                   open={this.state.displayHelpMenu}
                   handleVisibility={this.handleMenuVisibility}
@@ -419,6 +449,11 @@ class App extends Component {
                           value={lastRoll}
                           onClick={this.rollDie}
                         />
+                        {this.state.resourceDescription.length !== 0 && (
+                          <ResourceDisplay
+                            resourceDescription={this.state.resourceDescription}
+                          />
+                        )}
                         {this.state.showDiceInput && (
                           <DiceRoller
                             key={this.chartID}
@@ -453,11 +488,18 @@ class App extends Component {
                       </Typography>
                     )}
                     <DiceRollDisplay value={lastRoll} onClick={this.rollDie} />
-                    <DiceRoller
-                      key={this.chartID}
-                      onClick={this.rollDie}
-                      rolls={this.state.diceRolls}
-                    />
+                    {this.state.resourceDescription.length !== 0 && (
+                      <ResourceDisplay
+                        resourceDescription={this.state.resourceDescription}
+                      />
+                    )}
+                    {this.state.resourceDescription.length !== 0 && (
+                      <DiceRoller
+                        key={this.chartID}
+                        onClick={this.rollDie}
+                        rolls={this.state.diceRolls}
+                      />
+                    )}
                   </>
                 )}
                 {this.state.showNumPadInput && <DiceInput {...diceProps} />}

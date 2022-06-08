@@ -3,28 +3,15 @@ import PropTypes from "prop-types";
 import NumberTile from "./NumberTile";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
-import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
 
-const filterOptions = createFilterOptions({
-  trim: true,
-});
-
-const options = [
-  "--- Select ---",
-  "Brick",
-  "Clay",
-  "Lumber",
-  "Wood",
-  "Wheat",
-  "Hay",
-  "Grain",
-  "Wool",
-  "Sheep",
-  "Ore",
-];
+const options = ["Brick", "Grain", "Lumber", "Ore", "Wool"];
 
 const ResourceInput = ({
+  rarity,
+  dataId,
   tileValue,
   color,
   onChange,
@@ -32,39 +19,36 @@ const ResourceInput = ({
 }) => {
   return (
     <Box className="d-flex align-items-center" mt={2} mb={2}>
-      <NumberTile color={color} value={tileValue} />
-      <FormControl fullWidth margin="normal">
-        <Autocomplete
+      <NumberTile rarity={rarity} color={color} value={tileValue} />
+      <FormControl fullWidth margin="normal" size="small">
+        <InputLabel>Resource</InputLabel>
+        <Select
           id={tileValue}
-          autoHighlight
-          autoSelect
-          filterOptions={filterOptions}
-          autoComplete={false}
-          size="small"
-          options={options}
           value={value}
-          onChange={(event, newValue) => {
-            onChange(+tileValue, newValue);
+          label="Resource"
+          onChange={(e) => {
+            onChange(+tileValue, dataId, e.target.value);
           }}
-          renderInput={(params) => (
-            <TextField
-              size="small"
-              {...params}
-              label={`Resource ${tileValue}`}
-            />
-          )}
-        />
+        >
+          {options.map((val) => (
+            <MenuItem key={val} value={val.toLowerCase()}>
+              {val}
+            </MenuItem>
+          ))}
+        </Select>
       </FormControl>
     </Box>
   );
 };
 
 ResourceInput.propTypes = {
+  dataId: PropTypes.string.isRequired,
   tileValue: PropTypes.string.isRequired,
   color: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   resources: PropTypes.array,
   value: PropTypes.string,
+  rarity: PropTypes.number,
 };
 
 export default ResourceInput;
