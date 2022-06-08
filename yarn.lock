@@ -5439,7 +5439,6 @@ __metadata:
     react: ^18.1.0
     react-dom: ^18.1.0
     react-scripts: 5.0.1
-    roll-a-die: ^2.0.1
     web-vitals: ^2.1.4
     workbox-background-sync: ^6.5.3
     workbox-broadcast-update: ^6.5.3
@@ -11100,13 +11099,6 @@ __metadata:
   bin:
     rimraf: bin.js
   checksum: 87f4164e396f0171b0a3386cc1877a817f572148ee13a7e113b238e48e8a9f2f31d009a92ec38a591ff1567d9662c6b67fd8818a2dbbaed74bc26a87a2a4a9a0
-  languageName: node
-  linkType: hard
-
-"roll-a-die@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "roll-a-die@npm:2.0.1"
-  checksum: f4d23b9969ab567dfbfb2c0aaba4e3f86aa5dbb5ed92a4d26d3d464e7ed4743dbce3e47ea516817e207565c10eef4c09f110a4bdc429e693335c7d0b4d27c590
   languageName: node
   linkType: hard
 
