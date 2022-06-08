@@ -212,7 +212,12 @@ class App extends Component {
   };
 
   handlePress = (e) => {
-    if (e.target.nodeName === "INPUT") {
+    if (
+      e.target.nodeName === "INPUT" ||
+      e.target.nodeName === "LI" ||
+      e.target.nodeName === "BUTTON" ||
+      e.target.nodeName === "DIV"
+    ) {
       return;
     } else {
       e.preventDefault();

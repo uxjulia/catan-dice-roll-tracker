@@ -46,7 +46,7 @@ const ResourceTracker = ({
         <div className="container-sm my-4">
           <div className="row">
             <div className="col-sm-12">
-              <div className="align-items-center">
+              <form className="align-items-center">
                 <ResourceInput
                   dataId="1"
                   onChange={onChange}
@@ -185,7 +185,7 @@ const ResourceTracker = ({
                   tileValue="12"
                   rarity={1}
                 />
-              </div>
+              </form>
             </div>
           </div>
         </div>
