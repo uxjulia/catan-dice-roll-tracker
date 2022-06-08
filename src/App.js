@@ -493,7 +493,7 @@ class App extends Component {
                         resourceDescription={this.state.resourceDescription}
                       />
                     )}
-                    {this.state.resourceDescription.length !== 0 && (
+                    {this.state.showDiceInput && (
                       <DiceRoller
                         key={this.chartID}
                         onClick={this.rollDie}
