@@ -23,6 +23,7 @@ const Settings = ({
   handleDiceToggle,
   handleNumPadToggle,
   handleMenuVisibility,
+  handleResourceLogToggle,
   toggles,
 }) => {
   const showResourceTracker = true;
@@ -118,7 +119,7 @@ const Settings = ({
                   onChange={(e) => handleDiceToggle(e.target.checked)}
                 />
               }
-              label={<Typography variant="body2">Show Virtual Dice</Typography>}
+              label={<Typography variant="body2">Virtual Dice</Typography>}
               labelPlacement="end"
             />
             <FormControlLabel
@@ -128,20 +129,19 @@ const Settings = ({
                   onChange={(e) => handleNumPadToggle(e.target.checked)}
                 />
               }
-              label={<Typography variant="body2">Show Number Input</Typography>}
+              label={<Typography variant="body2">Number Input</Typography>}
               labelPlacement="end"
             />
-          </Box>
-          <Box mt={2}>
-            <Button
-              id="keyboard-shortcuts"
-              title="View keyboard shortcuts"
-              variant="text"
-              size="small"
-              onClick={() => handleMenuVisibility(true)}
-            >
-              View Keyboard Shortcuts
-            </Button>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={toggles.resourceLog}
+                  onChange={(e) => handleResourceLogToggle(e.target.checked)}
+                />
+              }
+              label={<Typography variant="body2">Resource Log</Typography>}
+              labelPlacement="end"
+            />
           </Box>
           {showResourceTracker && (
             <Box mt={2}>
@@ -156,6 +156,17 @@ const Settings = ({
               </Button>
             </Box>
           )}
+          <Box mt={2}>
+            <Button
+              id="keyboard-shortcuts"
+              title="View keyboard shortcuts"
+              variant="text"
+              size="small"
+              onClick={() => handleMenuVisibility(true)}
+            >
+              View Keyboard Shortcuts
+            </Button>
+          </Box>
         </AccordionDetails>
       </Accordion>
     </Box>
@@ -171,8 +182,10 @@ Settings.propTypes = {
   handleNumPadToggle: PropTypes.func.isRequired,
   handleMenuVisibility: PropTypes.func.isRequired,
   handleResourceTrackerVisibility: PropTypes.func.isRequired,
+  handleResourceLogToggle: PropTypes.func.isRequired,
   toggles: PropTypes.shape({
     numPadInput: PropTypes.bool,
     diceInput: PropTypes.bool,
+    resourceLog: PropTypes.bool,
   }).isRequired,
 };

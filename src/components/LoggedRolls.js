@@ -12,24 +12,27 @@ const Wrapper = styled.div`
     color: #d54343;
     font-weight: bold;
   }
-
-  .rolllog {
-    font-size: 0.875rem;
-  }
+  font-size: 0.875rem;
+  text-transform: capitalize;
 `;
 
-const LoggedRolls = ({ data }) => {
+const LoggedRolls = ({
+  data,
+  highlight = true,
+  totalText = "Total Rolls",
+  lastText = "Last Roll",
+}) => {
   return (
     <Card variant="outlined" id="loggedRolls" className="mb-3">
       <CardContent>
         <Box className="mb-1">
           <Typography className="text-muted" component="span" variant="body2">
-            Total Rolls: {data.length}{" "}
+            {totalText}: {data.length}{" "}
           </Typography>
         </Box>
         <Wrapper>
           <Typography mr={1} variant="body2" component="span">
-            Last Roll:
+            {lastText}:
           </Typography>
           {!data.length && (
             <Typography className="text-muted" variant="body2" component="span">
@@ -42,7 +45,7 @@ const LoggedRolls = ({ data }) => {
             </Typography>
           )}
           {data.length > 1 && (
-            <span className="rolllog">
+            <span className={`${highlight ? "rolllog" : null}`}>
               <span>{_.head(data)}, </span>
               <span>{_.join(_.tail(data), ", ")}</span>
             </span>
@@ -57,4 +60,7 @@ export default LoggedRolls;
 
 LoggedRolls.propTypes = {
   data: PropTypes.array,
+  highlight: PropTypes.bool,
+  totalText: PropTypes.string,
+  lastText: PropTypes.string,
 };

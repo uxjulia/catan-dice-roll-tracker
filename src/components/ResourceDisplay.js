@@ -5,7 +5,13 @@ import Box from "@mui/material/Box";
 const ResourceImage = ({ name }) => {
   if (name === "") return null;
   return (
-    <img src={`./images/${name}.png`} alt={name} width="100px" height="auto" />
+    <img
+      src={`./images/${name}.png`}
+      alt={name}
+      width="100px"
+      height="auto"
+      style={{ margin: "5px" }}
+    />
   );
 };
 

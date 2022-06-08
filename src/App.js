@@ -153,10 +153,12 @@ const defaultState = {
   diceRolls: [],
   showDiceInput: true,
   showNumPadInput: true,
+  showResourceLog: false,
   displayHelpMenu: false,
   displayResourceTracker: false,
   lastPlayer: "",
   resourceDescription: [],
+  resourceLog: [],
 };
 
 class App extends Component {
@@ -165,9 +167,33 @@ class App extends Component {
     this.chartID = 1;
     this.state = defaultState;
     this.clearNames = 0;
-    this.handleResourceTrackerVisibility =
-      this.handleResourceTrackerVisibility.bind(this);
   }
+
+  handleReset = () => {
+    this.chartID++;
+    this.setState({
+      rolls: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      log: [],
+      activePlayer: 0,
+      diceRolls: [],
+      lastPlayer: "",
+      resourceDescription: [],
+      resources: {
+        2: { 1: "" },
+        3: { 1: "", 2: "" },
+        4: { 1: "", 2: "" },
+        5: { 1: "", 2: "" },
+        6: { 1: "", 2: "" },
+        8: { 1: "", 2: "" },
+        9: { 1: "", 2: "" },
+        10: { 1: "", 2: "" },
+        11: { 1: "", 2: "" },
+        12: { 1: "" },
+      },
+      resourceLog: [],
+    });
+  };
+
   setPlayerNames = (e) => {
     const data = this.state.players;
     const x = Number(e.target.id);
@@ -263,30 +289,6 @@ class App extends Component {
     this.setState({ rolls: rolls, log: log });
   };
 
-  handleReset = () => {
-    this.chartID++;
-    this.setState({
-      rolls: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      log: [],
-      activePlayer: 0,
-      diceRolls: [],
-      lastPlayer: "",
-      resourceDescription: [],
-      resources: {
-        2: { 1: "" },
-        3: { 1: "", 2: "" },
-        4: { 1: "", 2: "" },
-        5: { 1: "", 2: "" },
-        6: { 1: "", 2: "" },
-        8: { 1: "", 2: "" },
-        9: { 1: "", 2: "" },
-        10: { 1: "", 2: "" },
-        11: { 1: "", 2: "" },
-        12: { 1: "" },
-      },
-    });
-  };
-
   handleSelect = (e) => {
     const oldTotal = this.state.players.length;
     let newTotal =
@@ -342,7 +344,11 @@ class App extends Component {
         res.push(obj[key]);
       }
     }
-    this.setState({ resourceDescription: res });
+    this.setState({
+      resourceDescription: res,
+      resourceLog: [...res, ...this.state.resourceLog],
+    });
+
     return res;
   };
 
@@ -367,6 +373,7 @@ class App extends Component {
       lastRoll: lastRoll,
       data: this.state.rolls,
     };
+
     const playerProps = {
       state: this.state,
       players: this.state.players,
@@ -378,6 +385,7 @@ class App extends Component {
       toggles: {
         diceInput: this.state.showDiceInput,
         numPadInput: this.state.showNumPadInput,
+        resourceLog: this.state.showResourceLog,
       },
       handleSelect: this.handleSelect,
       onChange: this.setPlayerNames,
@@ -386,6 +394,9 @@ class App extends Component {
       },
       handleNumPadToggle: (option) => {
         this.setState({ showNumPadInput: option });
+      },
+      handleResourceLogToggle: (option) => {
+        this.setState({ showResourceLog: option });
       },
       handleResourceTrackerVisibility: this.handleResourceTrackerVisibility,
       handleMenuVisibility: this.handleMenuVisibility,
@@ -477,36 +488,42 @@ class App extends Component {
                 </div>
                 <DiceChart {...chartProps} />
                 <LoggedRolls data={this.state.log} />
+                {this.state.showResourceLog && (
+                  <LoggedRolls
+                    data={this.state.resourceLog}
+                    highlight={false}
+                    totalText="Total Resource Pulls"
+                    lastText="Last Resources"
+                  />
+                )}
               </div>
             }
             right={
               <div>
-                {this.state.showDiceInput && (
-                  <>
-                    {this.state.lastPlayer !== "" && (
-                      <Typography
-                        color="primary"
-                        align="center"
-                        sx={{ marginBottom: ".5rem" }}
-                      >
-                        {this.state.lastPlayer} rolled a
-                      </Typography>
-                    )}
-                    <DiceRollDisplay value={lastRoll} onClick={this.rollDie} />
-                    {this.state.resourceDescription.length !== 0 && (
-                      <ResourceDisplay
-                        resourceDescription={this.state.resourceDescription}
-                      />
-                    )}
-                    {this.state.showDiceInput && (
-                      <DiceRoller
-                        key={this.chartID}
-                        onClick={this.rollDie}
-                        rolls={this.state.diceRolls}
-                      />
-                    )}
-                  </>
-                )}
+                <>
+                  {this.state.lastPlayer !== "" && (
+                    <Typography
+                      color="primary"
+                      align="center"
+                      sx={{ marginBottom: ".5rem" }}
+                    >
+                      {this.state.lastPlayer} rolled a
+                    </Typography>
+                  )}
+                  <DiceRollDisplay value={lastRoll} onClick={this.rollDie} />
+                  {this.state.resourceDescription.length !== 0 && (
+                    <ResourceDisplay
+                      resourceDescription={this.state.resourceDescription}
+                    />
+                  )}
+                  {this.state.showDiceInput && (
+                    <DiceRoller
+                      key={this.chartID}
+                      onClick={this.rollDie}
+                      rolls={this.state.diceRolls}
+                    />
+                  )}
+                </>
                 {this.state.showNumPadInput && <DiceInput {...diceProps} />}
                 <Button
                   className="mt-2 mb-3 px-2"
