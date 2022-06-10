@@ -5,8 +5,8 @@ import PropTypes from "prop-types";
 
 const SiteLayout = ({ left, right, fullScreen = false }) => {
   return (
-    <Box pt={1} pb={3}>
-      {!fullScreen && <Header title="Dice Roll Tracker" />}
+    <Box pt={1} pb={3} mb={2}>
+      {!fullScreen && <Header title="Catan Tracker" />}
       <div className="container-fluid mt-2">
         <div className="row">
           {fullScreen && <div className="col-md-12">{left}</div>}
