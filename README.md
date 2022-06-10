@@ -6,7 +6,7 @@ https://catan.uxj.io
 
 Simple Catan dice roll tracker that I built for my own personal use. Maybe you'll find it helpful as well!
 
-# Getting Started
+# Development
 
 ## Prerequisties
 
