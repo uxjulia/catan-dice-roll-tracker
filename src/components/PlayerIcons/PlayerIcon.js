@@ -12,9 +12,14 @@ const PlayerIcon = ({ active, id, name, onClick }) => {
   return (
     <IconButton id={id} title={name} onClick={handleClick}>
       {active && (
-        <FontAwesomeIcon id={id} style={{ color: "#C53437" }} icon={faUser} />
+        <FontAwesomeIcon
+          id={id}
+          style={{ color: "#C53437" }}
+          icon={faUser}
+          size="xs"
+        />
       )}
-      {!active && <FontAwesomeIcon id={id} icon={faUser} />}
+      {!active && <FontAwesomeIcon id={id} icon={faUser} size="xs" />}
     </IconButton>
   );
 };

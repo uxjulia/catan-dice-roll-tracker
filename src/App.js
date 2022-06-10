@@ -131,23 +131,37 @@ function resetPlayers(oldTotal, newTotal, playerArr) {
   }
   return playerArr;
 }
+const testResources = {
+  2: { 1: "lumber" },
+  3: { 1: "brick", 2: "ore" },
+  4: { 1: "ore", 2: "lumber" },
+  5: { 1: "wool", 2: "brick" },
+  6: { 1: "grain", 2: "lumber" },
+  8: { 1: "ore", 2: "wool" },
+  9: { 1: "ore", 2: "brick" },
+  10: { 1: "lumber", 2: "brick" },
+  11: { 1: "ore", 2: "wool" },
+  12: { 1: "grain" },
+};
+
+// const blankResources =  {
+//     2: { 1: "" },
+//     3: { 1: "", 2: "" },
+//     4: { 1: "", 2: "" },
+//     5: { 1: "", 2: "" },
+//     6: { 1: "", 2: "" },
+//     8: { 1: "", 2: "" },
+//     9: { 1: "", 2: "" },
+//     10: { 1: "", 2: "" },
+//     11: { 1: "", 2: "" },
+//     12: { 1: "" },
+//   }
 
 const defaultState = {
   players: [],
   rolls: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   log: [],
-  resources: {
-    2: { 1: "" },
-    3: { 1: "", 2: "" },
-    4: { 1: "", 2: "" },
-    5: { 1: "", 2: "" },
-    6: { 1: "", 2: "" },
-    8: { 1: "", 2: "" },
-    9: { 1: "", 2: "" },
-    10: { 1: "", 2: "" },
-    11: { 1: "", 2: "" },
-    12: { 1: "" },
-  },
+  resources: testResources,
   activePlayer: 0,
   fullScreen: false,
   diceRolls: [],
@@ -468,6 +482,7 @@ class App extends Component {
                         {this.state.resourceDescription.length !== 0 && (
                           <ResourceDisplay
                             resourceDescription={this.state.resourceDescription}
+                            icons={false}
                           />
                         )}
                         {this.state.showDiceInput && (
@@ -513,6 +528,7 @@ class App extends Component {
                   <DiceRollDisplay value={lastRoll} onClick={this.rollDie} />
                   {this.state.resourceDescription.length !== 0 && (
                     <ResourceDisplay
+                      icons={false}
                       resourceDescription={this.state.resourceDescription}
                     />
                   )}

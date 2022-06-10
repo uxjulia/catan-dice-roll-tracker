@@ -7,7 +7,24 @@ import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 
-const options = ["Brick", "Grain", "Lumber", "Ore", "Wool"];
+const options = [
+  "Clay / Brick",
+  "Hay / Grain",
+  "Wood / Lumber",
+  "Ore",
+  "Sheep / Wool",
+];
+const resourceMap = {
+  "Clay / Brick": "brick",
+  "Hay / Grain": "grain",
+  "Wood / Lumber": "lumber",
+  Ore: "ore",
+  "Sheep / Wool": "wool",
+  brick: "brick",
+  grain: "grain",
+  lumber: "lumber",
+  wool: "wool",
+};
 
 const ResourceInput = ({
   rarity,
@@ -24,14 +41,14 @@ const ResourceInput = ({
         <InputLabel>Resource</InputLabel>
         <Select
           id={tileValue}
-          value={value}
+          value={resourceMap[value] || value}
           label="Resource"
           onChange={(e) => {
             onChange(+tileValue, dataId, e.target.value);
           }}
         >
           {options.map((val) => (
-            <MenuItem key={val} value={val.toLowerCase()}>
+            <MenuItem key={val} value={resourceMap[val]}>
               {val}
             </MenuItem>
           ))}
