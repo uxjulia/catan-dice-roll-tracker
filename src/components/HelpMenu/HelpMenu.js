@@ -23,7 +23,7 @@ const HelpMenu = ({ open = false, handleVisibility }) => {
         onClose={() => handleVisibility(false)}
         TransitionComponent={Transition}
       >
-        <AppBar sx={{ position: "relative" }}>
+        <AppBar sx={{ position: "sticky", top: "0", left: "0", right: "0" }}>
           <Toolbar>
             <IconButton
               edge="start"
