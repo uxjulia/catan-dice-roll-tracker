@@ -219,26 +219,30 @@ const Settings = ({
             <Chip label="Other" size="small" />
           </Divider>
           <Box mt={2}>
-            <Button
-              id="keyboard-shortcuts"
-              title="View keyboard shortcuts"
-              variant="text"
-              size="small"
-              onClick={() => handleMenuVisibility(true)}
-            >
-              <FontAwesomeIcon icon={faKeyboard} className="me-2" /> Keyboard
-              Shortcuts
-            </Button>
-            <Button
-              id="show-love"
-              title="Show love to the developer"
-              variant="text"
-              size="small"
-              onClick={() => handleAboutPageVisibility(true)}
-            >
-              <FontAwesomeIcon icon={faHeart} className="me-2" />
-              Show Love
-            </Button>
+            <Box>
+              <Button
+                id="keyboard-shortcuts"
+                title="View keyboard shortcuts"
+                variant="text"
+                size="small"
+                onClick={() => handleMenuVisibility(true)}
+              >
+                <FontAwesomeIcon icon={faKeyboard} className="me-2" /> Keyboard
+                Shortcuts
+              </Button>
+            </Box>
+            <Box>
+              <Button
+                id="show-love"
+                title="Show love to the developer"
+                variant="text"
+                size="small"
+                onClick={() => handleAboutPageVisibility(true)}
+              >
+                <FontAwesomeIcon icon={faHeart} className="me-2" />
+                Show Love
+              </Button>
+            </Box>
           </Box>
         </AccordionDetails>
       </Accordion>
