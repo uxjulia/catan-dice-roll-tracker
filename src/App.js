@@ -319,6 +319,7 @@ class App extends Component {
       handleDiceLogToggle: (option) => {
         this.setState({ showDiceLog: option });
       },
+      handleAboutPageVisibility: this.handleAboutPageVisibility,
       handleResourceTrackerVisibility: this.handleResourceTrackerVisibility,
       handleMenuVisibility: this.handleMenuVisibility,
     };

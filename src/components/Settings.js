@@ -13,6 +13,7 @@ import {
   faAngleDown,
   faTrees,
   faKeyboard,
+  faHeart,
 } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
@@ -62,6 +63,7 @@ const Settings = ({
   handleNumPadToggle,
   handleMenuVisibility,
   handleResourceLogToggle,
+  handleAboutPageVisibility,
   handleDiceLogToggle,
   toggles,
 }) => {
@@ -78,7 +80,7 @@ const Settings = ({
         </AccordionSummary>
         <AccordionDetails>
           <Divider>
-            <Chip label="Players" size="small" />
+            <Chip label="Options" size="small" />
           </Divider>
           <Box my={2}>
             <PlayerSelect
@@ -146,67 +148,75 @@ const Settings = ({
               />
             )}
           </Box>
-          <Divider>
-            <Chip label="Options" size="small" />
-          </Divider>
-          <Box my={1}>
-            <Box mt={2} mb={2}>
-              <Button
-                fullWidth
-                id="enter-resources"
-                title="Enter Resources"
-                variant="contained"
-                size="small"
-                color="success"
-                onClick={() => handleResourceTrackerVisibility(true)}
-              >
-                <FontAwesomeIcon icon={faTrees} className="me-2" /> Track
-                Resources
-              </Button>
-            </Box>
-            <FormControlLabel
-              control={
-                <CheckSwitch
-                  checked={toggles.numPadInput}
-                  onChange={(e) => handleNumPadToggle(e.target.checked)}
-                />
-              }
-              label={<Typography variant="body2">Number Pad</Typography>}
-              labelPlacement="end"
-            />
-            <FormControlLabel
-              control={
-                <CheckSwitch
-                  checked={toggles.diceInput}
-                  onChange={(e) => handleDiceToggle(e.target.checked)}
-                />
-              }
-              label={<Typography variant="body2">Virtual Dice</Typography>}
-              labelPlacement="end"
-            />
-            <FormControlLabel
-              control={
-                <CheckSwitch
-                  checked={toggles.diceLog}
-                  onChange={(e) => handleDiceLogToggle(e.target.checked)}
-                />
-              }
-              label={<Typography variant="body2">Dice Log</Typography>}
-              labelPlacement="end"
-            />
-            <FormControlLabel
-              control={
-                <CheckSwitch
-                  checked={toggles.resourceLog}
-                  onChange={(e) => handleResourceLogToggle(e.target.checked)}
-                />
-              }
-              label={<Typography variant="body2">Resource Log</Typography>}
-              labelPlacement="end"
-            />
+          <Box mt={2} mb={2}>
+            <Button
+              fullWidth
+              id="enter-resources"
+              title="Enter Resources"
+              variant="contained"
+              size="small"
+              color="success"
+              onClick={() => handleResourceTrackerVisibility(true)}
+            >
+              <FontAwesomeIcon icon={faTrees} className="me-2" /> Track
+              Resources
+            </Button>
           </Box>
           <Divider>
-            <Chip label="Help" size="small" />
+            <Chip label="Visibility" size="small" />
+          </Divider>
+          <Box my={1}>
+            <Box>
+              <FormControlLabel
+                control={
+                  <CheckSwitch
+                    checked={toggles.numPadInput}
+                    onChange={(e) => handleNumPadToggle(e.target.checked)}
+                  />
+                }
+                label={<Typography variant="body2">Number Pad</Typography>}
+                labelPlacement="end"
+              />
+            </Box>
+            <Box>
+              <FormControlLabel
+                control={
+                  <CheckSwitch
+                    checked={toggles.diceInput}
+                    onChange={(e) => handleDiceToggle(e.target.checked)}
+                  />
+                }
+                label={<Typography variant="body2">Virtual Dice</Typography>}
+                labelPlacement="end"
+              />
+            </Box>
+            <Box>
+              <FormControlLabel
+                control={
+                  <CheckSwitch
+                    checked={toggles.diceLog}
+                    onChange={(e) => handleDiceLogToggle(e.target.checked)}
+                  />
+                }
+                label={<Typography variant="body2">Dice Log</Typography>}
+                labelPlacement="end"
+              />
+            </Box>
+            <Box>
+              <FormControlLabel
+                control={
+                  <CheckSwitch
+                    checked={toggles.resourceLog}
+                    onChange={(e) => handleResourceLogToggle(e.target.checked)}
+                  />
+                }
+                label={<Typography variant="body2">Resource Log</Typography>}
+                labelPlacement="end"
+              />
+            </Box>
+          </Box>
+          <Divider>
+            <Chip label="Other" size="small" />
           </Divider>
           <Box mt={2}>
             <Button
@@ -218,6 +228,16 @@ const Settings = ({
             >
               <FontAwesomeIcon icon={faKeyboard} className="me-2" /> Keyboard
               Shortcuts
+            </Button>
+            <Button
+              id="show-love"
+              title="Show love to the developer"
+              variant="text"
+              size="small"
+              onClick={() => handleAboutPageVisibility(true)}
+            >
+              <FontAwesomeIcon icon={faHeart} className="me-2" />
+              Show Love
             </Button>
           </Box>
         </AccordionDetails>
@@ -237,6 +257,7 @@ Settings.propTypes = {
   handleResourceTrackerVisibility: PropTypes.func.isRequired,
   handleResourceLogToggle: PropTypes.func.isRequired,
   handleDiceLogToggle: PropTypes.func.isRequired,
+  handleAboutPageVisibility: PropTypes.func.isRequired,
   toggles: PropTypes.shape({
     numPadInput: PropTypes.bool,
     diceInput: PropTypes.bool,
