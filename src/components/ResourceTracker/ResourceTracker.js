@@ -7,8 +7,9 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Slide from "@mui/material/Slide";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/pro-solid-svg-icons";
+import { faXmark, faCircleQuestion } from "@fortawesome/pro-solid-svg-icons";
 import ResourceInput from "./ResourceInput";
+import Box from "@mui/material/Box";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -28,7 +29,7 @@ const ResourceTracker = ({
         onClose={() => handleVisibility(false)}
         TransitionComponent={Transition}
       >
-        <AppBar sx={{ position: "sticky", top: "0", left: "0", right: "0" }}>
+        <AppBar sx={{ position: "fixed", top: "0", left: "0", right: "0" }}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -39,13 +40,24 @@ const ResourceTracker = ({
               <FontAwesomeIcon icon={faXmark} />
             </IconButton>
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Resource Tracker
+              Track Resources
             </Typography>
           </Toolbar>
         </AppBar>
-        <div className="container-sm my-4">
+        <div className="container-sm mb-2" style={{ marginTop: "60px" }}>
           <div className="row">
             <div className="col-sm-12">
+              <Box mt={4} mb={4}>
+                <Typography align="center">
+                  <FontAwesomeIcon
+                    icon={faCircleQuestion}
+                    className="me-2"
+                    color="#555"
+                  />
+                  Enter the corresponding resource for each number tile to
+                  display the resource when dice rolls are logged.
+                </Typography>
+              </Box>
               <form className="align-items-center">
                 <ResourceInput
                   dataId="1"

@@ -9,11 +9,49 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import { faAngleDown } from "@fortawesome/pro-solid-svg-icons";
+import {
+  faAngleDown,
+  faTrees,
+  faKeyboard,
+} from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
 import PlayerSelect from "./PlayerSelect";
 import InputField from "./InputField";
+import { styled } from "@mui/material/styles";
+
+const CheckSwitch = styled(Switch)(({ theme }) => ({
+  padding: 8,
+  "& .MuiSwitch-track": {
+    borderRadius: 22 / 2,
+    "&:before, &:after": {
+      content: '""',
+      position: "absolute",
+      top: "50%",
+      transform: "translateY(-50%)",
+      width: 16,
+      height: 16,
+    },
+    "&:before": {
+      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+        theme.palette.getContrastText(theme.palette.primary.main)
+      )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
+      left: 12,
+    },
+    "&:after": {
+      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+        theme.palette.getContrastText(theme.palette.primary.main)
+      )}" d="M19,13H5V11H19V13Z" /></svg>')`,
+      right: 12,
+    },
+  },
+  "& .MuiSwitch-thumb": {
+    boxShadow: "none",
+    width: 16,
+    height: 16,
+    margin: 2,
+  },
+}));
 
 const Settings = ({
   handleResourceTrackerVisibility,
@@ -24,9 +62,9 @@ const Settings = ({
   handleNumPadToggle,
   handleMenuVisibility,
   handleResourceLogToggle,
+  handleDiceLogToggle,
   toggles,
 }) => {
-  const showResourceTracker = true;
   return (
     <Box mb={1}>
       <Accordion
@@ -112,9 +150,33 @@ const Settings = ({
             <Chip label="Options" size="small" />
           </Divider>
           <Box my={1}>
+            <Box mt={2} mb={2}>
+              <Button
+                fullWidth
+                id="enter-resources"
+                title="Enter Resources"
+                variant="contained"
+                size="small"
+                color="success"
+                onClick={() => handleResourceTrackerVisibility(true)}
+              >
+                <FontAwesomeIcon icon={faTrees} className="me-2" /> Track
+                Resources
+              </Button>
+            </Box>
             <FormControlLabel
               control={
-                <Switch
+                <CheckSwitch
+                  checked={toggles.numPadInput}
+                  onChange={(e) => handleNumPadToggle(e.target.checked)}
+                />
+              }
+              label={<Typography variant="body2">Number Pad</Typography>}
+              labelPlacement="end"
+            />
+            <FormControlLabel
+              control={
+                <CheckSwitch
                   checked={toggles.diceInput}
                   onChange={(e) => handleDiceToggle(e.target.checked)}
                 />
@@ -124,17 +186,17 @@ const Settings = ({
             />
             <FormControlLabel
               control={
-                <Switch
-                  checked={toggles.numPadInput}
-                  onChange={(e) => handleNumPadToggle(e.target.checked)}
+                <CheckSwitch
+                  checked={toggles.diceLog}
+                  onChange={(e) => handleDiceLogToggle(e.target.checked)}
                 />
               }
-              label={<Typography variant="body2">Number Input</Typography>}
+              label={<Typography variant="body2">Dice Log</Typography>}
               labelPlacement="end"
             />
             <FormControlLabel
               control={
-                <Switch
+                <CheckSwitch
                   checked={toggles.resourceLog}
                   onChange={(e) => handleResourceLogToggle(e.target.checked)}
                 />
@@ -143,19 +205,9 @@ const Settings = ({
               labelPlacement="end"
             />
           </Box>
-          {showResourceTracker && (
-            <Box mt={2}>
-              <Button
-                id="keyboard-shortcuts"
-                title="View keyboard shortcuts"
-                variant="text"
-                size="small"
-                onClick={() => handleResourceTrackerVisibility(true)}
-              >
-                Enter Resources
-              </Button>
-            </Box>
-          )}
+          <Divider>
+            <Chip label="Help" size="small" />
+          </Divider>
           <Box mt={2}>
             <Button
               id="keyboard-shortcuts"
@@ -164,7 +216,8 @@ const Settings = ({
               size="small"
               onClick={() => handleMenuVisibility(true)}
             >
-              View Keyboard Shortcuts
+              <FontAwesomeIcon icon={faKeyboard} className="me-2" /> Keyboard
+              Shortcuts
             </Button>
           </Box>
         </AccordionDetails>
@@ -183,9 +236,11 @@ Settings.propTypes = {
   handleMenuVisibility: PropTypes.func.isRequired,
   handleResourceTrackerVisibility: PropTypes.func.isRequired,
   handleResourceLogToggle: PropTypes.func.isRequired,
+  handleDiceLogToggle: PropTypes.func.isRequired,
   toggles: PropTypes.shape({
     numPadInput: PropTypes.bool,
     diceInput: PropTypes.bool,
     resourceLog: PropTypes.bool,
+    diceLog: PropTypes.bool,
   }).isRequired,
 };

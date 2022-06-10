@@ -28,6 +28,9 @@ let chance = new Chance();
 import HelpMenu from "./components/HelpMenu";
 import ResourceTracker from "./components/ResourceTracker";
 import ResourceDisplay from "./components/ResourceDisplay";
+import Footer from "./components/Footer";
+import { logKey, nextPlayer, resetPlayers } from "./utils";
+import About from "./components/About";
 
 const ExpansionIconWrapper = styled.div`
 @media only screen and (max-width: 576px) {
@@ -36,114 +39,18 @@ const ExpansionIconWrapper = styled.div`
   }
 })`;
 
-function testLog(n) {
-  let x = n.toUpperCase();
-  if (x === "ROLL" || x === "UNDO" || x === "NEW") {
-    return true;
-  } else {
-    const x = Number(n);
-    return x >= 2 && x <= 13 ? true : false;
-  }
-}
-
-function keyCode(x) {
-  let n;
-  switch (x) {
-    case "1":
-      n = "11";
-      break;
-    case "0":
-      n = "10";
-      break;
-    case "-":
-      n = "11";
-      break;
-    case "=":
-      n = "12";
-      break;
-    case " ":
-      n = "ROLL";
-      break;
-    case "z":
-    case "Z":
-      n = "UNDO";
-      break;
-    case "n":
-    case "N":
-      n = "NEW";
-      break;
-    default:
-      n = x;
-      break;
-  }
-  if (testLog(n) === true) {
-    return n;
-  } else {
-    return false;
-  }
-}
-
-function logKey(event) {
-  if (event) {
-    if (event.which) {
-      return keyCode(String.fromCharCode(event.keyCode)); // IE
-    } else if (event.which !== 0 && event.charCode !== 0) {
-      return keyCode(event.key);
-    } else {
-      return null; // Special Key
-    }
-  }
-}
-
-function nextPlayer(activePlayer, option) {
-  let x = null;
-  switch (option) {
-    case "next":
-      x = activePlayer + 1;
-      break;
-    case "back":
-      x = activePlayer - 1;
-      break;
-    default:
-      x = activePlayer;
-  }
-  return x;
-}
-
-function resetPlayers(oldTotal, newTotal, playerArr) {
-  const diff = oldTotal - newTotal;
-  if (newTotal < oldTotal) {
-    playerArr.splice(newTotal, diff);
-  }
-  if (newTotal > oldTotal) {
-    let x = playerArr.length;
-    while (x < newTotal) {
-      x++;
-      playerArr.push("Player " + x);
-    }
-  }
-  if (newTotal === oldTotal) {
-    let x = 0;
-    while (x < newTotal) {
-      playerArr[x] = "Player " + (x + 1);
-      x++;
-    }
-  }
-  return playerArr;
-}
-
- const blankResources =  {
-     2: { 1: "" },
-     3: { 1: "", 2: "" },
-     4: { 1: "", 2: "" },  
-     5: { 1: "", 2: "" },
-     6: { 1: "", 2: "" },
-     8: { 1: "", 2: "" },
-     9: { 1: "", 2: "" },
-     10: { 1: "", 2: "" },
-     11: { 1: "", 2: "" },
-     12: { 1: "" },
-   }
+const blankResources = {
+  2: { 1: "" },
+  3: { 1: "", 2: "" },
+  4: { 1: "", 2: "" },
+  5: { 1: "", 2: "" },
+  6: { 1: "", 2: "" },
+  8: { 1: "", 2: "" },
+  9: { 1: "", 2: "" },
+  10: { 1: "", 2: "" },
+  11: { 1: "", 2: "" },
+  12: { 1: "" },
+};
 
 const defaultState = {
   players: [],
@@ -156,8 +63,10 @@ const defaultState = {
   showDiceInput: true,
   showNumPadInput: true,
   showResourceLog: false,
+  showDiceLog: true,
   displayHelpMenu: false,
   displayResourceTracker: false,
+  displayAboutPage: false,
   lastPlayer: "",
   resourceDescription: [],
   resourceLog: [],
@@ -196,39 +105,6 @@ class App extends Component {
     });
   };
 
-  setPlayerNames = (e) => {
-    const data = this.state.players;
-    const x = Number(e.target.id);
-    data[x] = e.target.value;
-    this.setState({ players: data });
-  };
-
-  setLastPlayer = () => {
-    if (this.state.log.length === 0) {
-      this.setState({ lastPlayer: this.state.players[0] });
-    } else {
-      let lastPlayer = this.state.activePlayer;
-      this.setState({ lastPlayer: this.state.players[lastPlayer] });
-    }
-  };
-
-  setActivePlayer = (e, option) => {
-    if (e) {
-      this.setState({ activePlayer: Number(e.target.id) });
-    } else {
-      const activePlayer = this.state.activePlayer;
-      const totalPlayers = this.state.players.length;
-      const next = nextPlayer(activePlayer, option);
-      if (next === totalPlayers) {
-        this.setState({ activePlayer: 0 });
-      } else if (next === -1) {
-        this.setState({ activePlayer: totalPlayers - 1 });
-      } else {
-        this.setState({ activePlayer: next });
-      }
-    }
-    if (this.state.players.length) this.setLastPlayer();
-  };
   handleClick = (e) => {
     const index = Number(e.target.id) - 2;
     const rolls = this.state.rolls;
@@ -268,16 +144,6 @@ class App extends Component {
     }
   };
 
-  setRoll = (n) => {
-    const index = Number(n) - 2;
-    const rolls = this.state.rolls;
-    rolls[index]++;
-    let log = update(this.state.log, { $unshift: [n] });
-    this.setState({ rolls: rolls, log: log });
-    this.setActivePlayer(null, "next");
-    this.getResources(+n);
-  };
-
   handleUndo = () => {
     if (this.state.log.length === 0) return;
     const log = this.state.log;
@@ -309,22 +175,50 @@ class App extends Component {
     this.setRoll(count);
   };
 
-  rollDie = async () => {
-    let roll1 = chance.d6();
-    let roll2 = chance.d6();
-    this.setState({ diceRolls: [roll1, roll2] });
-    this.handleRoll([roll1, roll2]);
-  };
-
-  setFullScreen = () => {
-    this.setState({ fullScreen: !this.state.fullScreen });
-  };
-
   handleMenuVisibility = (visible) => {
     this.setState({ displayHelpMenu: visible });
   };
+
   handleResourceTrackerVisibility = (visible) => {
     this.setState({ displayResourceTracker: visible });
+  };
+
+  handleAboutPageVisibility = (visible) => {
+    this.setState({ displayAboutPage: visible });
+  };
+
+  setPlayerNames = (e) => {
+    const data = this.state.players;
+    const x = Number(e.target.id);
+    data[x] = e.target.value;
+    this.setState({ players: data });
+  };
+
+  setLastPlayer = () => {
+    if (this.state.log.length === 0) {
+      this.setState({ lastPlayer: this.state.players[0] });
+    } else {
+      let lastPlayer = this.state.activePlayer;
+      this.setState({ lastPlayer: this.state.players[lastPlayer] });
+    }
+  };
+
+  setActivePlayer = (e, option) => {
+    if (e) {
+      this.setState({ activePlayer: Number(e.target.id) });
+    } else {
+      const activePlayer = this.state.activePlayer;
+      const totalPlayers = this.state.players.length;
+      const next = nextPlayer(activePlayer, option);
+      if (next === totalPlayers) {
+        this.setState({ activePlayer: 0 });
+      } else if (next === -1) {
+        this.setState({ activePlayer: totalPlayers - 1 });
+      } else {
+        this.setState({ activePlayer: next });
+      }
+    }
+    if (this.state.players.length) this.setLastPlayer();
   };
 
   setResource = (tileValue, count, value) => {
@@ -334,6 +228,20 @@ class App extends Component {
         [index]: { [count]: { $set: value } },
       }),
     });
+  };
+
+  setRoll = (n) => {
+    const index = Number(n) - 2;
+    const rolls = this.state.rolls;
+    rolls[index]++;
+    let log = update(this.state.log, { $unshift: [n] });
+    this.setState({ rolls: rolls, log: log });
+    this.setActivePlayer(null, "next");
+    this.getResources(+n);
+  };
+
+  setFullScreen = () => {
+    this.setState({ fullScreen: !this.state.fullScreen });
   };
 
   getResources = (value) => {
@@ -352,6 +260,13 @@ class App extends Component {
     });
 
     return res;
+  };
+
+  rollDie = async () => {
+    let roll1 = chance.d6();
+    let roll2 = chance.d6();
+    this.setState({ diceRolls: [roll1, roll2] });
+    this.handleRoll([roll1, roll2]);
   };
 
   componentDidMount() {
@@ -388,6 +303,7 @@ class App extends Component {
         diceInput: this.state.showDiceInput,
         numPadInput: this.state.showNumPadInput,
         resourceLog: this.state.showResourceLog,
+        diceLog: this.state.showDiceLog,
       },
       handleSelect: this.handleSelect,
       onChange: this.setPlayerNames,
@@ -400,6 +316,9 @@ class App extends Component {
       handleResourceLogToggle: (option) => {
         this.setState({ showResourceLog: option });
       },
+      handleDiceLogToggle: (option) => {
+        this.setState({ showDiceLog: option });
+      },
       handleResourceTrackerVisibility: this.handleResourceTrackerVisibility,
       handleMenuVisibility: this.handleMenuVisibility,
     };
@@ -411,6 +330,10 @@ class App extends Component {
             fullScreen={this.state.fullScreen}
             left={
               <div>
+                <About
+                  open={this.state.displayAboutPage}
+                  handleVisibility={this.handleAboutPageVisibility}
+                />
                 <HelpMenu
                   open={this.state.displayHelpMenu}
                   handleVisibility={this.handleMenuVisibility}
@@ -490,9 +413,13 @@ class App extends Component {
                   </div>
                 </div>
                 <DiceChart {...chartProps} />
-                <LoggedRolls data={this.state.log} />
+                {this.state.showDiceLog && (
+                  <LoggedRolls data={this.state.log} />
+                )}
                 {this.state.showResourceLog && (
                   <LoggedRolls
+                    state={this}
+                    resourceLog
                     data={this.state.resourceLog}
                     highlight={false}
                     totalText="Total Resource Pulls"
@@ -543,6 +470,7 @@ class App extends Component {
               </div>
             }
           />
+          <Footer onClick={() => this.handleAboutPageVisibility(true)} />
         </CustomTheme>
       </>
     );

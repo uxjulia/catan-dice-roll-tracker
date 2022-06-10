@@ -34,7 +34,7 @@ const DiceRoller = ({ onClick, rolls = [] }) => {
   const hybrid = deviceType === "hybrid";
   return (
     <Wrapper>
-      <Box role="button" onClick={onClick} sx={{ cursor: "pointer" }} py={2}>
+      <Box role="button" onClick={onClick} sx={{ cursor: "pointer" }} py={1}>
         {rolls.length === 0 && (
           <Typography
             align="center"
@@ -49,7 +49,7 @@ const DiceRoller = ({ onClick, rolls = [] }) => {
         )}
         <Box className="d-flex justify-content-evenly">
           {rolls.map((roll, index) => (
-            <Dice key={index} value={roll} size="4x" />
+            <Dice key={index} value={roll} size="3x" />
           ))}
         </Box>
       </Box>

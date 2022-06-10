@@ -23,7 +23,7 @@ const HelpMenu = ({ open = false, handleVisibility }) => {
         onClose={() => handleVisibility(false)}
         TransitionComponent={Transition}
       >
-        <AppBar sx={{ position: "sticky", top: "0", left: "0", right: "0" }}>
+        <AppBar sx={{ position: "fixed", top: "0", left: "0", right: "0" }}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -38,7 +38,7 @@ const HelpMenu = ({ open = false, handleVisibility }) => {
             </Typography>
           </Toolbar>
         </AppBar>
-        <div className="container-sm my-2">
+        <div className="container-sm mb-2" style={{ marginTop: "60px" }}>
           <div className="row">
             <div className="col-sm-12">
               <div className="d-flex align-items-center justify-content-between">
