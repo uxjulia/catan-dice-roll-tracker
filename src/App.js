@@ -89,18 +89,6 @@ class App extends Component {
       diceRolls: [],
       lastPlayer: "",
       resourceDescription: [],
-      resources: {
-        2: { 1: "" },
-        3: { 1: "", 2: "" },
-        4: { 1: "", 2: "" },
-        5: { 1: "", 2: "" },
-        6: { 1: "", 2: "" },
-        8: { 1: "", 2: "" },
-        9: { 1: "", 2: "" },
-        10: { 1: "", 2: "" },
-        11: { 1: "", 2: "" },
-        12: { 1: "" },
-      },
       resourceLog: [],
     });
   };
@@ -154,7 +142,14 @@ class App extends Component {
       rolls[lastRoll]--;
     }
     log.shift();
-    this.setState({ rolls: rolls, log: log });
+    const resourceLog = this.state.resourceLog;
+    const rl = this.state.resourceDescription.length;
+    let i = 0;
+    while (i < rl) {
+      resourceLog.shift();
+      i++;
+    }
+    this.setState({ rolls: rolls, log: log, resourceLog: resourceLog });
   };
 
   handleSelect = (e) => {
@@ -340,6 +335,7 @@ class App extends Component {
                   handleVisibility={this.handleMenuVisibility}
                 />
                 <ResourceTracker
+                  appState={this}
                   resources={this.state.resources}
                   onChange={this.setResource}
                   open={this.state.displayResourceTracker}

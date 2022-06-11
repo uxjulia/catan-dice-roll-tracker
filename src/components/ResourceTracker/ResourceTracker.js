@@ -10,12 +10,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faCircleQuestion } from "@fortawesome/pro-solid-svg-icons";
 import ResourceInput from "./ResourceInput";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const ResourceTracker = ({
+  appState,
   open = false,
   handleVisibility,
   onChange,
@@ -198,6 +200,37 @@ const ResourceTracker = ({
                   rarity={1}
                 />
               </form>
+              <Box mt={5} mb={4} className="d-flex justify-content-between">
+                <Button
+                  variant="contained"
+                  color="grey"
+                  onClick={() =>
+                    appState.setState({
+                      resources: {
+                        2: { 1: "" },
+                        3: { 1: "", 2: "" },
+                        4: { 1: "", 2: "" },
+                        5: { 1: "", 2: "" },
+                        6: { 1: "", 2: "" },
+                        8: { 1: "", 2: "" },
+                        9: { 1: "", 2: "" },
+                        10: { 1: "", 2: "" },
+                        11: { 1: "", 2: "" },
+                        12: { 1: "" },
+                      },
+                    })
+                  }
+                >
+                  Clear Resources
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleVisibility(false)}
+                >
+                  Done
+                </Button>
+              </Box>
             </div>
           </div>
         </div>
@@ -213,4 +246,5 @@ ResourceTracker.propTypes = {
   open: PropTypes.bool.isRequired,
   handleVisibility: PropTypes.func.isRequired,
   onChange: PropTypes.func,
+  appState: PropTypes.object.isRequired,
 };

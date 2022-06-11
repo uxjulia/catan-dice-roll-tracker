@@ -16,22 +16,37 @@ const Wrapper = styled.div`
 `;
 
 const LoggedRolls = ({
-  state,
+  appState,
   resourceLog = false,
   data,
   highlight = true,
   totalText = "Total Rolls",
   lastText = "Last Roll",
 }) => {
+  const checkResources = () => {
+    try {
+      const resources = appState.state.resources;
+      const obj = resources[2];
+      let isEmpty = true;
+      for (let key in obj) {
+        if (obj[key] !== "") {
+          isEmpty = false;
+        }
+      }
+      return isEmpty;
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <Card variant="outlined" id="loggedRolls" className="mb-2">
-      {resourceLog && data.length === 0 ? (
+      {resourceLog && checkResources() ? (
         <Box p={1}>
           <Typography variant="body2" className="text-muted">
             <a
               href="#"
               role="button"
-              onClick={() => state.handleResourceTrackerVisibility(true)}
+              onClick={() => appState.handleResourceTrackerVisibility(true)}
             >
               Enter Resources
             </a>{" "}
@@ -79,7 +94,7 @@ const LoggedRolls = ({
 export default LoggedRolls;
 
 LoggedRolls.propTypes = {
-  state: PropTypes.object,
+  appState: PropTypes.object.isRequired,
   data: PropTypes.array,
   highlight: PropTypes.bool,
   totalText: PropTypes.string,

@@ -7,7 +7,7 @@ const SiteLayout = ({ left, right, fullScreen = false }) => {
   return (
     <Box pt={1} pb={3} mb={2}>
       {!fullScreen && <Header title="Catan Tracker" />}
-      <div className="container-fluid mt-2">
+      <div className="container-fluid">
         <div className="row">
           {fullScreen && <div className="col-md-12">{left}</div>}
           {!fullScreen && (
