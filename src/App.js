@@ -31,6 +31,7 @@ import ResourceDisplay from "./components/ResourceDisplay";
 import Footer from "./components/Footer";
 import { logKey, nextPlayer, resetPlayers } from "./utils";
 import About from "./components/About";
+import ConfirmationDialog from "./components/ConfirmationDialog";
 
 const ExpansionIconWrapper = styled.div`
 @media only screen and (max-width: 576px) {
@@ -64,9 +65,11 @@ const defaultState = {
   showNumPadInput: true,
   showResourceLog: false,
   showDiceLog: true,
+  showResourceTiles: true,
   displayHelpMenu: false,
   displayResourceTracker: false,
   displayAboutPage: false,
+  displayConfirmation: false,
   lastPlayer: "",
   resourceDescription: [],
   resourceLog: [],
@@ -90,6 +93,7 @@ class App extends Component {
       lastPlayer: "",
       resourceDescription: [],
       resourceLog: [],
+      displayConfirmation: false,
     });
   };
 
@@ -123,7 +127,7 @@ class App extends Component {
           this.handleUndo();
           break;
         case "NEW":
-          this.handleReset();
+          this.handleConfirmationVisibility(true);
           break;
         default:
           this.setState({ diceRolls: [] });
@@ -180,6 +184,10 @@ class App extends Component {
 
   handleAboutPageVisibility = (visible) => {
     this.setState({ displayAboutPage: visible });
+  };
+
+  handleConfirmationVisibility = (visible) => {
+    this.setState({ displayConfirmation: visible });
   };
 
   setPlayerNames = (e) => {
@@ -299,6 +307,7 @@ class App extends Component {
         numPadInput: this.state.showNumPadInput,
         resourceLog: this.state.showResourceLog,
         diceLog: this.state.showDiceLog,
+        resourceTiles: this.state.showResourceTiles,
       },
       handleSelect: this.handleSelect,
       onChange: this.setPlayerNames,
@@ -314,6 +323,9 @@ class App extends Component {
       handleDiceLogToggle: (option) => {
         this.setState({ showDiceLog: option });
       },
+      handleResourceTileToggle: (option) => {
+        this.setState({ showResourceTiles: option });
+      },
       handleAboutPageVisibility: this.handleAboutPageVisibility,
       handleResourceTrackerVisibility: this.handleResourceTrackerVisibility,
       handleMenuVisibility: this.handleMenuVisibility,
@@ -326,6 +338,11 @@ class App extends Component {
             fullScreen={this.state.fullScreen}
             left={
               <div>
+                <ConfirmationDialog
+                  open={this.state.displayConfirmation}
+                  handleVisibility={this.handleConfirmationVisibility}
+                  handleConfirm={this.handleReset}
+                />
                 <About
                   open={this.state.displayAboutPage}
                   handleVisibility={this.handleAboutPageVisibility}
@@ -387,11 +404,17 @@ class App extends Component {
                           value={lastRoll}
                           onClick={this.rollDie}
                         />
-                        {this.state.resourceDescription.length !== 0 && (
-                          <ResourceDisplay
-                            resourceDescription={this.state.resourceDescription}
-                            icons={false}
-                          />
+                        {this.state.showResourceTiles && (
+                          <>
+                            {this.state.resourceDescription.length !== 0 && (
+                              <ResourceDisplay
+                                resourceDescription={
+                                  this.state.resourceDescription
+                                }
+                                icons={false}
+                              />
+                            )}
+                          </>
                         )}
                         {this.state.showDiceInput && (
                           <DiceRoller
@@ -415,7 +438,7 @@ class App extends Component {
                 )}
                 {this.state.showResourceLog && (
                   <LoggedRolls
-                    state={this}
+                    appState={this}
                     resourceLog
                     data={this.state.resourceLog}
                     highlight={false}
@@ -438,11 +461,15 @@ class App extends Component {
                     </Typography>
                   )}
                   <DiceRollDisplay value={lastRoll} onClick={this.rollDie} />
-                  {this.state.resourceDescription.length !== 0 && (
-                    <ResourceDisplay
-                      icons={false}
-                      resourceDescription={this.state.resourceDescription}
-                    />
+                  {this.state.showResourceTiles && (
+                    <>
+                      {this.state.resourceDescription.length !== 0 && (
+                        <ResourceDisplay
+                          resourceDescription={this.state.resourceDescription}
+                          icons={false}
+                        />
+                      )}
+                    </>
                   )}
                   {this.state.showDiceInput && (
                     <DiceRoller
@@ -457,7 +484,7 @@ class App extends Component {
                   className="mt-2 mb-3 px-2"
                   variant="contained"
                   fullWidth
-                  onClick={this.handleReset}
+                  onClick={() => this.handleConfirmationVisibility(true)}
                   key="reset"
                   id="reset"
                 >

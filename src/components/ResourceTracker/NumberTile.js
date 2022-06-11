@@ -16,7 +16,7 @@ const TileDot = styled.div(
 );
 
 const NumberTile = ({
-  width = "75px",
+  width = "70px",
   value,
   color = "#333333",
   rarity = 1,
@@ -33,7 +33,7 @@ const NumberTile = ({
     marginRight: "15px",
     display: "inline-block",
     boxShadow:
-      "rgba(0, 0, 0, 0.1) 0px -1px 0px 3px inset, rgba(0, 0, 0, 0.3) 0px 0px 0px 1px",
+      "rgba(0, 0, 0, 0.1) 0px 0px 0px 2px inset, rgba(0, 0, 0, 0.3) 0px 0px 0px 1px",
   };
   return (
     <div

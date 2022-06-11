@@ -94,7 +94,7 @@ const LoggedRolls = ({
 export default LoggedRolls;
 
 LoggedRolls.propTypes = {
-  appState: PropTypes.object.isRequired,
+  appState: PropTypes.object,
   data: PropTypes.array,
   highlight: PropTypes.bool,
   totalText: PropTypes.string,

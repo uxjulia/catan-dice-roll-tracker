@@ -64,6 +64,7 @@ const Settings = ({
   handleMenuVisibility,
   handleResourceLogToggle,
   handleAboutPageVisibility,
+  handleResourceTileToggle,
   handleDiceLogToggle,
   toggles,
 }) => {
@@ -154,7 +155,6 @@ const Settings = ({
               id="enter-resources"
               title="Enter Resources"
               variant="contained"
-              size="small"
               color="success"
               onClick={() => handleResourceTrackerVisibility(true)}
             >
@@ -214,6 +214,18 @@ const Settings = ({
                 labelPlacement="end"
               />
             </Box>
+            <Box>
+              <FormControlLabel
+                control={
+                  <CheckSwitch
+                    checked={toggles.resourceTiles}
+                    onChange={(e) => handleResourceTileToggle(e.target.checked)}
+                  />
+                }
+                label={<Typography variant="body2">Resource Tiles</Typography>}
+                labelPlacement="end"
+              />
+            </Box>
           </Box>
           <Divider>
             <Chip label="Other" size="small" />
@@ -224,7 +236,6 @@ const Settings = ({
                 id="keyboard-shortcuts"
                 title="View keyboard shortcuts"
                 variant="text"
-                size="small"
                 onClick={() => handleMenuVisibility(true)}
               >
                 <FontAwesomeIcon icon={faKeyboard} className="me-2" /> Keyboard
@@ -236,7 +247,6 @@ const Settings = ({
                 id="show-love"
                 title="Show love to the developer"
                 variant="text"
-                size="small"
                 onClick={() => handleAboutPageVisibility(true)}
               >
                 <FontAwesomeIcon icon={faHeart} className="me-2" />
@@ -261,11 +271,13 @@ Settings.propTypes = {
   handleResourceTrackerVisibility: PropTypes.func.isRequired,
   handleResourceLogToggle: PropTypes.func.isRequired,
   handleDiceLogToggle: PropTypes.func.isRequired,
+  handleResourceTileToggle: PropTypes.func.isRequired,
   handleAboutPageVisibility: PropTypes.func.isRequired,
   toggles: PropTypes.shape({
     numPadInput: PropTypes.bool,
     diceInput: PropTypes.bool,
     resourceLog: PropTypes.bool,
     diceLog: PropTypes.bool,
+    resourceTiles: PropTypes.bool,
   }).isRequired,
 };
