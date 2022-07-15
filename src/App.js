@@ -511,17 +511,18 @@ class App extends Component {
                         />
                       )}
                     </div>
-                    {this.state.showTwelveSideDice && (
-                      <div className="col-3">
-                        <DiceRollDisplay
-                          value={this.state.twelveSideRoll}
-                          onClick={this.rollDie}
-                          bgColor="#ffffff"
-                          d12={true}
-                          fontColor="#222"
-                        />
-                      </div>
-                    )}
+                    {this.state.showTwelveSideDice &&
+                      this.state.twelveSideRoll !== undefined && (
+                        <div className="col-3">
+                          <DiceRollDisplay
+                            value={this.state.twelveSideRoll}
+                            onClick={this.rollDie}
+                            bgColor="#ffffff"
+                            d12={true}
+                            fontColor="#222"
+                          />
+                        </div>
+                      )}
                   </div>
                 </>
                 {this.state.showNumPadInput && <DiceInput {...diceProps} />}
