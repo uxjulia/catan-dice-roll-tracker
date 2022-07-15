@@ -10,6 +10,7 @@ function testLog(n) {
 
 function keyCode(x) {
   let n;
+  console.log(`keyCode: ${x}`);
   switch (x) {
     case "1":
       n = "11";
@@ -46,10 +47,9 @@ function keyCode(x) {
 }
 
 export function logKey(event) {
+  console.log("logKey", event);
   if (event) {
-    if (event.which) {
-      return keyCode(String.fromCharCode(event.keyCode)); // IE
-    } else if (event.which !== 0 && event.charCode !== 0) {
+    if (event.key) {
       return keyCode(event.key);
     } else {
       return null; // Special Key
