@@ -67,7 +67,7 @@ const defaultState = {
   showResourceLog: false,
   showDiceLog: true,
   showResourceTiles: true,
-  showTwelveSideDice: true,
+  showTwelveSideDice: false,
   displayHelpMenu: false,
   displayResourceTracker: false,
   displayAboutPage: false,
