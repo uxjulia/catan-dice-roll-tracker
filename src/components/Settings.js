@@ -207,11 +207,11 @@ const Settings = ({
               <FormControlLabel
                 control={
                   <CheckSwitch
-                    checked={toggles.resourceLog}
-                    onChange={(e) => handleResourceLogToggle(e.target.checked)}
+                    checked={toggles.resourceTiles}
+                    onChange={(e) => handleResourceTileToggle(e.target.checked)}
                   />
                 }
-                label={<Typography variant="body2">Resource Log</Typography>}
+                label={<Typography variant="body2">Resource Tiles</Typography>}
                 labelPlacement="end"
               />
             </Box>
@@ -219,11 +219,11 @@ const Settings = ({
               <FormControlLabel
                 control={
                   <CheckSwitch
-                    checked={toggles.resourceTiles}
-                    onChange={(e) => handleResourceTileToggle(e.target.checked)}
+                    checked={toggles.resourceLog}
+                    onChange={(e) => handleResourceLogToggle(e.target.checked)}
                   />
                 }
-                label={<Typography variant="body2">Resource Tiles</Typography>}
+                label={<Typography variant="body2">Resource Log</Typography>}
                 labelPlacement="end"
               />
             </Box>
