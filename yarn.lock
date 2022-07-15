@@ -1837,6 +1837,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fortawesome/pro-light-svg-icons@npm:^6.1.1":
+  version: 6.1.1
+  resolution: "@fortawesome/pro-light-svg-icons@npm:6.1.1::__archiveUrl=https%3A%2F%2Fnpm.fontawesome.com%2F%40fortawesome%2Fpro-light-svg-icons%2F-%2F6.1.1%2Fpro-light-svg-icons-6.1.1.tgz"
+  dependencies:
+    "@fortawesome/fontawesome-common-types": 6.1.1
+  checksum: d0d011c89b315c7beda17a634fd8f584781d994f60a64c34b4a3eecbcc2dd65a1233e9f1f13b41c9e62f25eb24351a25416cc76e8e96f3ca12dee4125f07ce58
+  languageName: node
+  linkType: hard
+
 "@fortawesome/pro-regular-svg-icons@npm:^6.1.1":
   version: 6.1.1
   resolution: "@fortawesome/pro-regular-svg-icons@npm:6.1.1::__archiveUrl=https%3A%2F%2Fnpm.fontawesome.com%2F%40fortawesome%2Fpro-regular-svg-icons%2F-%2F6.1.1%2Fpro-regular-svg-icons-6.1.1.tgz"
@@ -1852,6 +1861,15 @@ __metadata:
   dependencies:
     "@fortawesome/fontawesome-common-types": 6.1.1
   checksum: 78d03ba47693e4083aee3386e84ab60ee9001ad7694efd951d1cdcd90c611e302d2a690caa1885d5b5cc3ae6ac5e1a2d75b2078d767fe28f0318fc20e1f8630c
+  languageName: node
+  linkType: hard
+
+"@fortawesome/pro-thin-svg-icons@npm:^6.1.1":
+  version: 6.1.1
+  resolution: "@fortawesome/pro-thin-svg-icons@npm:6.1.1::__archiveUrl=https%3A%2F%2Fnpm.fontawesome.com%2F%40fortawesome%2Fpro-thin-svg-icons%2F-%2F6.1.1%2Fpro-thin-svg-icons-6.1.1.tgz"
+  dependencies:
+    "@fortawesome/fontawesome-common-types": 6.1.1
+  checksum: 7bb7d3709e850d928ad7ee57ba93b5a8b4b14746edd43fe160f6da394904936ba1bb77386c03323b6af8de1cbf854db20076affc9006e064cdac27e5bf4927e1
   languageName: node
   linkType: hard
 
@@ -5419,8 +5437,10 @@ __metadata:
     "@emotion/styled": ^11.8.1
     "@fortawesome/fontawesome-svg-core": ^6.1.1
     "@fortawesome/pro-duotone-svg-icons": ^6.1.1
+    "@fortawesome/pro-light-svg-icons": ^6.1.1
     "@fortawesome/pro-regular-svg-icons": ^6.1.1
     "@fortawesome/pro-solid-svg-icons": ^6.1.1
+    "@fortawesome/pro-thin-svg-icons": ^6.1.1
     "@fortawesome/react-fontawesome": ^0.1.18
     "@mui/material": ^5.8.2
     "@popperjs/core": ^2.11.5

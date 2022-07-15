@@ -10,7 +10,6 @@ function testLog(n) {
 
 function keyCode(x) {
   let n;
-  console.log(`keyCode: ${x}`);
   switch (x) {
     case "1":
       n = "11";
@@ -47,7 +46,6 @@ function keyCode(x) {
 }
 
 export function logKey(event) {
-  console.log("logKey", event);
   if (event) {
     if (event.key) {
       return keyCode(event.key);

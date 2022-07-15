@@ -66,6 +66,7 @@ const Settings = ({
   handleAboutPageVisibility,
   handleResourceTileToggle,
   handleDiceLogToggle,
+  handleTwelveSideDice,
   toggles,
 }) => {
   return (
@@ -226,6 +227,18 @@ const Settings = ({
                 labelPlacement="end"
               />
             </Box>
+            <Box>
+              <FormControlLabel
+                control={
+                  <CheckSwitch
+                    checked={toggles.twelveSideDice}
+                    onChange={(e) => handleTwelveSideDice(e.target.checked)}
+                  />
+                }
+                label={<Typography variant="body2">12-sided Die</Typography>}
+                labelPlacement="end"
+              />
+            </Box>
           </Box>
           <Divider>
             <Chip label="Other" size="small" />
@@ -273,11 +286,13 @@ Settings.propTypes = {
   handleDiceLogToggle: PropTypes.func.isRequired,
   handleResourceTileToggle: PropTypes.func.isRequired,
   handleAboutPageVisibility: PropTypes.func.isRequired,
+  handleTwelveSideDice: PropTypes.func.isRequired,
   toggles: PropTypes.shape({
     numPadInput: PropTypes.bool,
     diceInput: PropTypes.bool,
     resourceLog: PropTypes.bool,
     diceLog: PropTypes.bool,
     resourceTiles: PropTypes.bool,
+    twelveSideDice: PropTypes.bool,
   }).isRequired,
 };

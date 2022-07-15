@@ -24,7 +24,6 @@ import {
 import DiceRoller from "./components/DiceRoller";
 import DiceRollDisplay from "./components/DiceRollDisplay";
 import Chance from "chance";
-let chance = new Chance();
 import HelpMenu from "./components/HelpMenu";
 import ResourceTracker from "./components/ResourceTracker";
 import ResourceDisplay from "./components/ResourceDisplay";
@@ -32,6 +31,8 @@ import Footer from "./components/Footer";
 import { logKey, nextPlayer, resetPlayers } from "./utils";
 import About from "./components/About";
 import ConfirmationDialog from "./components/ConfirmationDialog";
+
+let chance = new Chance();
 
 const ExpansionIconWrapper = styled.div`
 @media only screen and (max-width: 576px) {
@@ -66,6 +67,7 @@ const defaultState = {
   showResourceLog: false,
   showDiceLog: true,
   showResourceTiles: true,
+  showTwelveSideDice: true,
   displayHelpMenu: false,
   displayResourceTracker: false,
   displayAboutPage: false,
@@ -87,6 +89,7 @@ class App extends Component {
     this.chartID++;
     this.setState({
       rolls: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      twelveSideRoll: undefined,
       log: [],
       activePlayer: 0,
       diceRolls: [],
@@ -268,7 +271,8 @@ class App extends Component {
   rollDie = async () => {
     let roll1 = chance.d6();
     let roll2 = chance.d6();
-    this.setState({ diceRolls: [roll1, roll2] });
+    let roll12 = chance.d12();
+    this.setState({ diceRolls: [roll1, roll2], twelveSideRoll: roll12 });
     this.handleRoll([roll1, roll2]);
   };
 
@@ -308,6 +312,7 @@ class App extends Component {
         resourceLog: this.state.showResourceLog,
         diceLog: this.state.showDiceLog,
         resourceTiles: this.state.showResourceTiles,
+        twelveSideDice: this.state.showTwelveSideDice,
       },
       handleSelect: this.handleSelect,
       onChange: this.setPlayerNames,
@@ -325,6 +330,9 @@ class App extends Component {
       },
       handleResourceTileToggle: (option) => {
         this.setState({ showResourceTiles: option });
+      },
+      handleTwelveSideDice: (option) => {
+        this.setState({ showTwelveSideDice: option });
       },
       handleAboutPageVisibility: this.handleAboutPageVisibility,
       handleResourceTrackerVisibility: this.handleResourceTrackerVisibility,
@@ -400,29 +408,46 @@ class App extends Component {
                             {this.state.lastPlayer} rolled
                           </Typography>
                         )}
-                        <DiceRollDisplay
-                          value={lastRoll}
-                          onClick={this.rollDie}
-                        />
-                        {this.state.showResourceTiles && (
-                          <>
-                            {this.state.resourceDescription.length !== 0 && (
-                              <ResourceDisplay
-                                resourceDescription={
-                                  this.state.resourceDescription
-                                }
-                                icons={false}
+                        <div className="d-flex">
+                          <div className="col">
+                            <DiceRollDisplay
+                              value={lastRoll}
+                              onClick={this.rollDie}
+                            />
+                            {this.state.showResourceTiles && (
+                              <>
+                                {this.state.resourceDescription.length !==
+                                  0 && (
+                                  <ResourceDisplay
+                                    resourceDescription={
+                                      this.state.resourceDescription
+                                    }
+                                    icons={false}
+                                  />
+                                )}
+                              </>
+                            )}
+                            {this.state.showDiceInput && (
+                              <DiceRoller
+                                key={this.chartID}
+                                onClick={this.rollDie}
+                                rolls={this.state.diceRolls}
                               />
                             )}
-                          </>
-                        )}
-                        {this.state.showDiceInput && (
-                          <DiceRoller
-                            key={this.chartID}
-                            onClick={this.rollDie}
-                            rolls={this.state.diceRolls}
-                          />
-                        )}
+                          </div>
+                          {this.state.showTwelveSideDice &&
+                            this.state.twelveSideRoll !== undefined && (
+                              <div className="col-3">
+                                <DiceRollDisplay
+                                  value={this.state.twelveSideRoll}
+                                  onClick={this.rollDie}
+                                  bgColor="#ffffff"
+                                  d12={true}
+                                  fontColor="#222"
+                                />
+                              </div>
+                            )}
+                        </div>
                       </div>
                     )}
                     {this.state.players.length > 0 && (
@@ -460,24 +485,44 @@ class App extends Component {
                       {this.state.lastPlayer} rolled a
                     </Typography>
                   )}
-                  <DiceRollDisplay value={lastRoll} onClick={this.rollDie} />
-                  {this.state.showResourceTiles && (
-                    <>
-                      {this.state.resourceDescription.length !== 0 && (
-                        <ResourceDisplay
-                          resourceDescription={this.state.resourceDescription}
-                          icons={false}
+                  <div className="d-flex">
+                    <div className="col">
+                      <DiceRollDisplay
+                        value={lastRoll}
+                        onClick={this.rollDie}
+                      />
+                      {this.state.showResourceTiles && (
+                        <>
+                          {this.state.resourceDescription.length !== 0 && (
+                            <ResourceDisplay
+                              resourceDescription={
+                                this.state.resourceDescription
+                              }
+                              icons={false}
+                            />
+                          )}
+                        </>
+                      )}
+                      {this.state.showDiceInput && (
+                        <DiceRoller
+                          key={this.chartID}
+                          onClick={this.rollDie}
+                          rolls={this.state.diceRolls}
                         />
                       )}
-                    </>
-                  )}
-                  {this.state.showDiceInput && (
-                    <DiceRoller
-                      key={this.chartID}
-                      onClick={this.rollDie}
-                      rolls={this.state.diceRolls}
-                    />
-                  )}
+                    </div>
+                    {this.state.showTwelveSideDice && (
+                      <div className="col-3">
+                        <DiceRollDisplay
+                          value={this.state.twelveSideRoll}
+                          onClick={this.rollDie}
+                          bgColor="#ffffff"
+                          d12={true}
+                          fontColor="#222"
+                        />
+                      </div>
+                    )}
+                  </div>
                 </>
                 {this.state.showNumPadInput && <DiceInput {...diceProps} />}
                 <Button
